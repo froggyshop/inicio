@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi pedido — Froggy Shop</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2226%22>🐸</text></svg>">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<main class="container app-width" style="padding-top: var(--space-5); padding-bottom: var(--space-6);">
+
+  <!-- VISTA: CARRITO -->
+  <section id="view-cart">
+    <div class="section-head" style="text-align:left; margin: 0 0 var(--space-4);">
+      <span class="eyebrow">Mi pedido</span>
+      <h2>Tu pedido</h2>
+    </div>
+    <div id="cart-lines"></div>
+    <div id="cart-empty" style="display:none;"></div>
+
+    <div id="cart-summary" style="display:none;">
+      <div class="summary-row">
+        <span>Total estimado</span>
+        <span id="cart-total"></span>
+      </div>
+      <p class="summary-note" id="cart-min-warning" style="display:none;"></p>
+      <p class="summary-note" id="cart-disclaimer"></p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap: var(--space-3); margin-top: var(--space-5);">
+      <button class="btn btn--primary" id="go-checkout">Solicitar pedido</button>
+      <a class="btn btn--ghost" href="tienda.html">Seguir comprando</a>
+    </div>
+  </section>
+
+  <!-- VISTA: FORMULARIO DE SOLICITUD -->
+  <section id="view-checkout" style="display:none;">
+    <div class="section-head" style="text-align:left; margin: 0 0 var(--space-4);">
+      <span class="eyebrow">Un último paso</span>
+      <h2>Datos para tu solicitud</h2>
+      <p>Con esto confirmamos tu pedido y te contactamos por WhatsApp.</p>
+    </div>
+
+    <form id="order-form" novalidate>
+      <div class="form-field">
+        <label for="f-name">Nombre completo</label>
+        <input type="text" id="f-name" name="name" required autocomplete="name">
+        <span class="error" id="err-name" hidden>Escribe tu nombre.</span>
+      </div>
+
+      <div class="form-field">
+        <label for="f-whatsapp">WhatsApp</label>
+        <input type="tel" id="f-whatsapp" name="whatsapp" inputmode="numeric" placeholder="Ej. 7711234567" required autocomplete="tel">
+        <span class="error" id="err-whatsapp" hidden>Escribe un número de WhatsApp válido.</span>
+      </div>
+
+      <div class="form-field">
+        <label for="f-email">Correo electrónico (opcional)</label>
+        <input type="email" id="f-email" name="email" autocomplete="email">
+      </div>
+
+      <div class="form-field">
+        <label>Entrega</label>
+        <div class="radio-row" id="delivery-options">
+          <label class="radio-card" data-value="personal">
+            <input type="radio" name="delivery" value="personal" checked>
+            Entrega personal en Pachuca
+          </label>
+          <label class="radio-card" data-value="envio">
+            <input type="radio" name="delivery" value="envio">
+            Envío
+          </label>
+        </div>
+      </div>
+
+      <div id="address-fields" style="display:none;">
+        <div class="form-field">
+          <label for="f-state">Estado</label>
+          <input type="text" id="f-state" name="state">
+        </div>
+        <div class="form-field">
+          <label for="f-city">Ciudad</label>
+          <input type="text" id="f-city" name="city">
+        </div>
+        <div class="form-field">
+          <label for="f-street">Dirección</label>
+          <input type="text" id="f-street" name="street">
+        </div>
+        <div class="form-field">
+          <label for="f-zip">Código postal</label>
+          <input type="text" id="f-zip" name="zip" inputmode="numeric">
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="f-event-date">Fecha del evento (si aplica)</label>
+        <input type="date" id="f-event-date" name="eventDate">
+      </div>
+
+      <div class="form-field">
+        <label for="f-comments">Comentarios o referencias</label>
+        <textarea id="f-comments" name="comments" placeholder="Ej. quiero recogerlo antes del 15, o esta es una referencia de diseño…"></textarea>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap: var(--space-3); margin-top: var(--space-5);">
+        <button type="submit" class="btn btn--primary" id="submit-order">Enviar solicitud</button>
+        <button type="button" class="btn btn--ghost" id="back-to-cart">Volver a mi pedido</button>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/events.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/orders.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    UI.renderHeader("pedido");
+    UI.renderFooter();
+    document.getElementById("cart-disclaimer").textContent = FROGGY_CONFIG.priceDisclaimer;
+    renderCart();
+
+    document.getElementById("go-checkout").addEventListener("click", () => {
+      if (CartAPI.getItems().length === 0) return;
+      document.getElementById("view-cart").style.display = "none";
+      document.getElementById("view-checkout").style.display = "block";
+      window.scrollTo(0, 0);
+    });
+
+    document.getElementById("back-to-cart").addEventListener("click", () => {
+      document.getElementById("view-checkout").style.display = "none";
+      document.getElementById("view-cart").style.display = "block";
+      renderCart();
+      window.scrollTo(0, 0);
+    });
+
+    document.querySelectorAll('input[name="delivery"]').forEach((radio) => {
+      radio.addEventListener("change", updateDeliveryUI);
+    });
+    updateDeliveryUI();
+
+    document.getElementById("order-form").addEventListener("submit", handleSubmit);
+  });
+
+  function updateDeliveryUI() {
+    const selected = document.querySelector('input[name="delivery"]:checked').value;
+    document.querySelectorAll("#delivery-options .radio-card").forEach((card) => {
+      card.classList.toggle("is-selected", card.dataset.value === selected);
+    });
+    document.getElementById("address-fields").style.display = selected === "envio" ? "block" : "none";
+  }
+
+  function renderCart() {
+    const items = CartAPI.getItems();
+    const linesWrap = document.getElementById("cart-lines");
+    const emptyWrap = document.getElementById("cart-empty");
+    const summary = document.getElementById("cart-summary");
+    const goCheckout = document.getElementById("go-checkout");
+
+    if (items.length === 0) {
+      linesWrap.innerHTML = "";
+      summary.style.display = "none";
+      goCheckout.disabled = true;
+      emptyWrap.style.display = "block";
+      emptyWrap.innerHTML = `
+        <div class="empty-state">
+          <span class="empty-state__icon">🛍️</span>
+          <h3>Tu pedido está vacío</h3>
+          <p>Agrega productos desde la tienda para armar tu pedido.</p>
+        </div>`;
+      return;
+    }
+
+    emptyWrap.style.display = "none";
+    goCheckout.disabled = false;
+    summary.style.display = "block";
+
+    linesWrap.innerHTML = items
+      .map(
+        (i) => `
+      <div class="order-line" data-key="${i.key}">
+        <div class="order-line__media">${UI.mediaHtml(i.image ? [i.image] : [], i.name)}</div>
+        <div class="order-line__info">
+          <div class="order-line__name">${i.name}</div>
+          <div class="order-line__meta">${i.option ? i.option + " · " : ""}${i.requiresQuote ? "Cotización" : UI.formatMoney(i.price) + " / " + i.unit}</div>
+          <div class="order-line__actions">
+            <div class="qty-control">
+              <button class="qty-btn" data-action="minus" aria-label="Disminuir cantidad de ${i.name}">−</button>
+              <span class="qty-value">${i.qty}</span>
+              <button class="qty-btn" data-action="plus" aria-label="Aumentar cantidad de ${i.name}">+</button>
+            </div>
+            <button class="link-remove" data-action="remove">Quitar</button>
+          </div>
+        </div>
+      </div>`
+      )
+      .join("");
+
+    document.getElementById("cart-total").textContent = UI.formatMoney(CartAPI.total());
+
+    const below = CartAPI.belowMinimum();
+    const warn = document.getElementById("cart-min-warning");
+    if (below.length > 0) {
+      warn.style.display = "block";
+      warn.textContent = `Recuerda: ${below.map((i) => i.name).join(", ")} está por debajo del pedido mínimo.`;
+    } else {
+      warn.style.display = "none";
+    }
+
+    linesWrap.querySelectorAll(".order-line").forEach((line) => {
+      const key = line.dataset.key;
+      const item = items.find((i) => i.key === key);
+      line.querySelector('[data-action="minus"]').addEventListener("click", () => {
+        CartAPI.updateQty(key, item.qty - 1);
+        renderCart();
+      });
+      line.querySelector('[data-action="plus"]').addEventListener("click", () => {
+        CartAPI.updateQty(key, item.qty + 1);
+        renderCart();
+      });
+      line.querySelector('[data-action="remove"]').addEventListener("click", () => {
+        CartAPI.remove(key);
+        renderCart();
+      });
+    });
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById("f-name").value.trim();
+    const whatsapp = document.getElementById("f-whatsapp").value.trim();
+    const email = document.getElementById("f-email").value.trim();
+    const delivery = document.querySelector('input[name="delivery"]:checked').value;
+    const eventDate = document.getElementById("f-event-date").value;
+    const comments = document.getElementById("f-comments").value.trim();
+
+    let valid = true;
+    toggleFieldError("f-name", "err-name", name.length === 0);
+    if (name.length === 0) valid = false;
+
+    const waValid = whatsapp.replace(/\D/g, "").length >= 10;
+    toggleFieldError("f-whatsapp", "err-whatsapp", !waValid);
+    if (!waValid) valid = false;
+
+    if (!valid) return;
+
+    const address =
+      delivery === "envio"
+        ? {
+            state: document.getElementById("f-state").value.trim(),
+            city: document.getElementById("f-city").value.trim(),
+            street: document.getElementById("f-street").value.trim(),
+            zip: document.getElementById("f-zip").value.trim(),
+          }
+        : null;
+
+    const order = {
+      id: OrdersAPI.generateOrderId(),
+      date: new Date().toISOString(),
+      name,
+      whatsapp,
+      email,
+      delivery,
+      address,
+      eventDate,
+      comments,
+      items: CartAPI.getItems(),
+      total: CartAPI.total(),
+    };
+
+    const submitBtn = document.getElementById("submit-order");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Enviando…";
+
+    await OrdersAPI.submitGoogleFormBackup(order);
+    OrdersAPI.saveLastOrder(order);
+    CartAPI.clear();
+
+    window.location.href = "confirmacion.html";
+  }
+
+  function toggleFieldError(inputId, errorId, show) {
+    document.getElementById(inputId).classList.toggle("has-error", show);
+    document.getElementById(errorId).hidden = !show;
+  }
+</script>
+</body>
+</html>

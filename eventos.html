@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eventos — Froggy Shop</title>
+<meta name="description" content="Próximos eventos, pop-ups, colaboraciones y deco dates de Froggy Shop.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2226%22>🐸</text></svg>">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<main class="container" style="padding-top: var(--space-5); padding-bottom: var(--space-7);">
+  <div class="section-head">
+    <span class="eyebrow">Froggy Shop en vivo</span>
+    <h2>Eventos y colaboraciones</h2>
+    <p>Próximos eventos, pop-ups, deco dates y colaboraciones.</p>
+  </div>
+
+  <div style="margin-bottom: var(--space-6);">
+    <h3 style="font-size:18px;">Próximos</h3>
+    <div id="events-upcoming" class="product-grid"></div>
+  </div>
+
+  <div>
+    <h3 style="font-size:18px;">Anteriores</h3>
+    <div id="events-past" class="product-grid"></div>
+  </div>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/events.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  function renderEventCard(e) {
+    return `
+      <div class="product-card" id="${e.id}">
+        <div class="product-card__media">${UI.mediaHtml(e.image ? [e.image] : [], e.title)}</div>
+        <div class="product-card__body">
+          <span class="product-card__cat">${e.date}</span>
+          <span class="product-card__name">${e.title}</span>
+          <p class="product-card__min" style="margin:0;">${e.location || ""}</p>
+          <p style="font-size:13px; color: var(--ink-soft); margin:4px 0 0;">${e.description || ""}</p>
+        </div>
+      </div>`;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    UI.renderHeader("eventos");
+    UI.renderFooter();
+
+    const upcoming = EventsAPI.upcoming();
+    const past = EventsAPI.past();
+
+    document.getElementById("events-upcoming").outerHTML = upcoming.length
+      ? `<div id="events-upcoming" class="product-grid">${upcoming.map(renderEventCard).join("")}</div>`
+      : `<div class="empty-state"><span class="empty-state__icon">🎉</span><h3>Aún no hay eventos próximos</h3><p>Síguenos en Instagram para ser el primero en enterarte.</p></div>`;
+
+    document.getElementById("events-past").outerHTML = past.length
+      ? `<div id="events-past" class="product-grid">${past.map(renderEventCard).join("")}</div>`
+      : `<div class="empty-state"><span class="empty-state__icon">📸</span><h3>Todavía no hay eventos anteriores registrados</h3><p>Los eventos pasados aparecerán aquí a medida que se agreguen en js/events.js.</p></div>`;
+  });
+</script>
+</body>
+</html>

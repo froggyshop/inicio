@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tienda — Froggy Shop</title>
+<meta name="description" content="Explora el catálogo de Froggy Shop: freebies, photocards, polaroids, llaveros, banners y más.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2226%22>🐸</text></svg>">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<main>
+  <section class="section" style="padding-bottom: var(--space-3);">
+    <div class="container">
+      <div class="section-head" style="margin-bottom: var(--space-4);">
+        <span class="eyebrow">Catálogo</span>
+        <h2>Tienda</h2>
+        <p>Elige una categoría o mira todo el catálogo. Los precios son estimados.</p>
+      </div>
+      <div class="chip-row" id="filter-chips" role="list" aria-label="Filtrar por categoría"></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: var(--space-4);">
+    <div class="container">
+      <div id="shop-grid" class="product-grid" role="list" aria-label="Resultados de la tienda"></div>
+      <div id="shop-empty" style="display:none;"></div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/events.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  function getParam(name) {
+    return new URLSearchParams(window.location.search).get(name);
+  }
+
+  function renderProductCard(p) {
+    return `
+      <a class="product-card" href="producto.html?id=${p.id}" role="listitem">
+        <div class="product-card__media">
+          ${p.requiresQuote ? `<span class="product-card__badge">Cotización</span>` : ""}
+          ${UI.mediaHtml(p.images, p.name)}
+        </div>
+        <div class="product-card__body">
+          <span class="product-card__cat">${ProductsAPI.categoryLabel(p.category)}</span>
+          <span class="product-card__name">${p.name}</span>
+          <span class="product-card__price">${p.requiresQuote ? "Cotización" : UI.formatMoney(p.price) + " / " + p.unit}</span>
+          <span class="product-card__min">Mínimo ${p.minOrder} ${p.unit}${p.minOrder > 1 ? "s" : ""}</span>
+        </div>
+      </a>`;
+  }
+
+  function renderGrid(catId) {
+    const grid = document.getElementById("shop-grid");
+    const empty = document.getElementById("shop-empty");
+    const items = ProductsAPI.byCategory(catId);
+
+    if (items.length === 0) {
+      grid.style.display = "none";
+      empty.style.display = "block";
+      empty.innerHTML = `
+        <div class="empty-state">
+          <span class="empty-state__icon">🐸</span>
+          <h3>No hay productos en esta categoría todavía</h3>
+          <p>Prueba otra categoría o escríbenos por WhatsApp, seguro tenemos algo para ti.</p>
+        </div>`;
+    } else {
+      grid.style.display = "grid";
+      empty.style.display = "none";
+      grid.innerHTML = items.map(renderProductCard).join("");
+    }
+  }
+
+  function renderChips(activeCat) {
+    const row = document.getElementById("filter-chips");
+    const all = [{ id: "todos", label: "Todos" }, ...CATEGORIES];
+    row.innerHTML = all
+      .map(
+        (c) =>
+          `<button class="chip ${c.id === activeCat ? "is-active" : ""}" data-cat="${c.id}" role="listitem" aria-pressed="${c.id === activeCat}">${c.label}</button>`
+      )
+      .join("");
+    row.querySelectorAll(".chip").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const cat = btn.dataset.cat;
+        const url = new URL(window.location);
+        if (cat === "todos") url.searchParams.delete("cat");
+        else url.searchParams.set("cat", cat);
+        window.history.replaceState({}, "", url);
+        renderChips(cat);
+        renderGrid(cat);
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    UI.renderHeader("tienda");
+    UI.renderFooter();
+    const initialCat = getParam("cat") || "todos";
+    renderChips(initialCat);
+    renderGrid(initialCat);
+  });
+</script>
+</body>
+</html>

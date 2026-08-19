@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Froggy Shop — Freebies y accesorios K-Pop en Pachuca</title>
+<meta name="description" content="Freebies, accesorios y detalles personalizados para fans de K-Pop. Pedidos sobre pedido, entrega en Pachuca o envío a todo México.">
+<meta property="og:title" content="Froggy Shop">
+<meta property="og:description" content="Freebies, accesorios y detalles personalizados para fans de K-Pop.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2226%22>🐸</text></svg>">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <div class="hero__sticker-wrap">
+          <span class="sticker sticker--pink">hecho con cariño 💌</span>
+        </div>
+        <h1>Freebies y accesorios K-Pop, a tu medida</h1>
+        <p class="lead">Photocards, llaveros, banners y detalles personalizados para tus artistas favoritos. Armas tu pedido aquí y lo confirmamos por WhatsApp.</p>
+        <div class="hero__actions">
+          <a href="tienda.html" class="btn btn--primary">Ver tienda</a>
+          <a href="personalizados.html" class="btn btn--secondary">Pedido personalizado</a>
+        </div>
+      </div>
+      <div class="hero__media">
+        <div class="photo-placeholder" role="img" aria-label="Foto pendiente del producto destacado">
+          <span class="photo-placeholder__icon" aria-hidden="true">🐸</span>
+          <span class="photo-placeholder__label">Foto pendiente</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORÍAS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head" style="margin-bottom: var(--space-4);">
+        <span class="eyebrow">Explora</span>
+        <h2>Categorías</h2>
+      </div>
+      <div class="chip-row" id="home-categories" role="list" aria-label="Categorías de productos"></div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS DESTACADOS -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Lo más pedido</span>
+        <h2>Productos destacados</h2>
+        <p>Estos son algunos de nuestros favoritos. Visita la tienda para ver el catálogo completo.</p>
+      </div>
+      <div class="product-grid" id="home-featured" role="list" aria-label="Productos destacados"></div>
+      <div style="text-align:center; margin-top: var(--space-6);">
+        <a href="tienda.html" class="btn btn--secondary">Ver todo el catálogo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSONALIZADOS -->
+  <section class="section">
+    <div class="container">
+      <div class="banner banner--pink">
+        <span class="sticker sticker--mint" style="color:#3E2B36;">✨ ¿tienes una idea diferente?</span>
+        <h3>Creamos productos especiales para tu evento</h3>
+        <p>Cumpleaños, conciertos, fan projects, cupsleeve events e intercambios de freebies. Cuéntanos tu idea y te decimos cómo hacerla realidad.</p>
+        <a href="personalizados.html" class="btn btn--secondary">Solicitar personalizado</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTOS -->
+  <section class="section section--mint">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Froggy Shop en vivo</span>
+        <h2>Eventos y colaboraciones</h2>
+        <p>Deco dates, pop-ups y participaciones en eventos K-Pop.</p>
+      </div>
+      <div id="home-events"></div>
+      <div style="text-align:center; margin-top: var(--space-5);">
+        <a href="eventos.html" class="btn btn--ghost">Ver todos los eventos</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM + ENTREGA -->
+  <section class="section">
+    <div class="container">
+      <div class="info-strip">
+        <div class="info-card">
+          <span class="info-card__icon">📸</span>
+          <div>
+            <h4>Síguenos en Instagram</h4>
+            <p><a href="#" id="ig-link" target="_blank" rel="noopener">Ver perfil</a> para ver productos nuevos y freebies del día.</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <span class="info-card__icon">📍</span>
+          <div>
+            <h4>Entrega personal</h4>
+            <p id="delivery-city-text"></p>
+          </div>
+        </div>
+        <div class="info-card">
+          <span class="info-card__icon">📦</span>
+          <div>
+            <h4>Envío</h4>
+            <p>Hacemos envíos a todo México. El costo se confirma antes de tu pago.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/events.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    UI.renderHeader("home");
+    UI.renderFooter();
+
+    document.getElementById("ig-link").href = FROGGY_CONFIG.instagramUrl;
+    document.getElementById("delivery-city-text").textContent =
+      `Recoge tu pedido en ${FROGGY_CONFIG.localDeliveryCity}, previa coordinación por WhatsApp.`;
+
+    // Categorías
+    const catRow = document.getElementById("home-categories");
+    catRow.innerHTML = CATEGORIES.map(
+      (c) => `<a class="chip" href="tienda.html?cat=${c.id}" role="listitem">${c.label}</a>`
+    ).join("");
+
+    // Productos destacados
+    const grid = document.getElementById("home-featured");
+    const featured = ProductsAPI.featured(4);
+    if (featured.length === 0) {
+      grid.outerHTML = `<div class="empty-state"><span class="empty-state__icon">🐸</span><h3>Todavía no hay productos</h3><p>Agrega productos en js/products.js para que aparezcan aquí.</p></div>`;
+    } else {
+      grid.innerHTML = featured.map(renderProductCard).join("");
+    }
+
+    // Eventos (próximos, máx 2, o empty state)
+    const upcoming = EventsAPI.upcoming().slice(0, 2);
+    const eventsWrap = document.getElementById("home-events");
+    if (upcoming.length === 0) {
+      eventsWrap.innerHTML = `<div class="empty-state"><span class="empty-state__icon">🎉</span><h3>Aún no hay eventos publicados</h3><p>Pronto compartiremos las próximas fechas por aquí y en Instagram.</p></div>`;
+    } else {
+      eventsWrap.innerHTML = `<div class="product-grid">` + upcoming.map(renderEventCardHome).join("") + `</div>`;
+    }
+  });
+
+  function renderProductCard(p) {
+    return `
+      <a class="product-card" href="producto.html?id=${p.id}" role="listitem">
+        <div class="product-card__media">
+          ${p.requiresQuote ? `<span class="product-card__badge">Cotización</span>` : ""}
+          ${UI.mediaHtml(p.images, p.name)}
+        </div>
+        <div class="product-card__body">
+          <span class="product-card__cat">${ProductsAPI.categoryLabel(p.category)}</span>
+          <span class="product-card__name">${p.name}</span>
+          <span class="product-card__price">${p.requiresQuote ? "Cotización" : UI.formatMoney(p.price) + " / " + p.unit}</span>
+          <span class="product-card__min">Mínimo ${p.minOrder} ${p.unit}${p.minOrder > 1 ? "s" : ""}</span>
+        </div>
+      </a>`;
+  }
+
+  function renderEventCardHome(e) {
+    return `
+      <a class="product-card" href="eventos.html#${e.id}">
+        <div class="product-card__media">${UI.mediaHtml(e.image ? [e.image] : [], e.title)}</div>
+        <div class="product-card__body">
+          <span class="product-card__cat">${e.date}</span>
+          <span class="product-card__name">${e.title}</span>
+          <span class="product-card__min">${e.location || ""}</span>
+        </div>
+      </a>`;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+# Froggy Shop — sitio web (HTML/CSS/JS, sin backend)
+
+Sitio estático mobile-first para Froggy Shop: catálogo, "Mi pedido", solicitud de personalizados y flujo de confirmación por WhatsApp. No usa base de datos ni servidor — todo el contenido editable vive en archivos `.js` dentro de `/js`.
+
+## Antes de publicar: cosas que DEBES editar
+
+1. **`js/config.js`**
+   - `whatsappNumber`: tu número real, formato `52` + 10 dígitos, sin espacios ni signos. Ejemplo: `"5217711234567"`.
+   - `contactEmail`: tu correo real (opcional).
+   - Si quieres el respaldo en Google Forms (ver abajo), cambia `googleFormEnabled` a `true` y llena `googleFormActionUrl` y `googleFormEntries`.
+
+2. **`js/products.js`**
+   - Reemplaza los productos marcados con `isDemo: true` por tus productos reales (o bórralos y agrega los tuyos con el mismo formato).
+   - Los precios, fotos y descripciones de ejemplo NO son reales — bórralos antes de compartir el sitio con clientes.
+   - Para fotos, guarda tus imágenes dentro de `assets/productos/` y escribe la ruta en el campo `images`, ej. `images: ["assets/productos/llavero-1.jpg"]`. Si dejas `images: []`, se muestra un marcador de "foto pendiente".
+
+3. **`js/events.js`**
+   - Está vacío a propósito. Agrega tus eventos reales cuando los tengas.
+
+4. **`sitemap.xml`**
+   - Cambia `https://TU-DOMINIO-AQUI` por la URL real una vez publicado el sitio.
+
+## Cómo se maneja cada cosa sin base de datos
+
+- **Catálogo**: vive en `js/products.js`. Editar ese archivo y volver a subirlo a GitHub es tu "panel administrativo".
+- **"Mi pedido"**: se guarda en el navegador del cliente (localStorage), no en un servidor. Si el cliente borra los datos del navegador o cambia de dispositivo, se pierde — es una limitación normal de un sitio sin backend.
+- **Registro de pedidos**: como no hay base de datos, el pedido final se envía por dos canales:
+  1. **WhatsApp** (obligatorio): se abre automáticamente con el mensaje armado.
+  2. **Google Form** (opcional, recomendado como respaldo): si lo configuras en `config.js`, cada solicitud también se guarda silenciosamente en una hoja de cálculo de Google, para que no dependas solo de que el cliente sí te escriba.
+
+### Cómo configurar el respaldo en Google Forms
+
+1. Crea un Google Form nuevo con preguntas de **respuesta corta** para: número de solicitud, nombre, WhatsApp, correo, entrega, dirección, productos, total, comentarios.
+2. En el formulario ya publicado, abre las herramientas de desarrollador del navegador (clic derecho → "Inspeccionar"), busca cada `<input>` y copia su atributo `name` (se ve como `entry.123456789`).
+3. La URL a la que hay que enviar los datos es la URL del formulario cambiando `viewform` por `formResponse`.
+4. Pega esos valores en `js/config.js`, dentro de `googleFormEntries` y `googleFormActionUrl`, y cambia `googleFormEnabled` a `true`.
+5. Cada respuesta enviada por el sitio caerá automáticamente en la hoja de cálculo vinculada al formulario.
+
+## Publicar en GitHub Pages
+
+1. Crea un repositorio nuevo en GitHub y sube todos estos archivos (conservando la estructura de carpetas).
+2. En el repositorio: **Settings → Pages**.
+3. En "Source", elige la rama principal (`main`) y la carpeta raíz (`/`).
+4. Guarda. GitHub te dará una URL parecida a `https://tu-usuario.github.io/froggy-shop/`.
+5. Ábrela en tu celular para probar todo el flujo: tienda → agregar producto → Mi pedido → solicitar pedido → WhatsApp.
+
+## Limitaciones importantes de un sitio sin backend (para que no haya sorpresas)
+
+- **No hay panel administrativo con inicio de sesión.** Administrar = editar archivos `.js` y volver a subir a GitHub. Si más adelante quieres que la propietaria edite productos desde una pantalla (sin tocar código), eso ya requiere backend real (por ejemplo, Next.js + Supabase, como sugería el brief original).
+- **No hay pagos automáticos** (tal como pedía el brief): el pago sigue siendo manual, por transferencia/depósito, confirmado por WhatsApp.
+- **Las imágenes que el cliente adjunta en "Personalizados"** no se suben a ningún servidor (un sitio estático no puede recibir archivos). El formulario junta los datos y abre WhatsApp; el cliente debe adjuntar sus imágenes directamente en el chat.
+- **El carrito vive en el navegador del cliente**, no en un servidor central.
+
+## Estructura de archivos
+
+```
+froggy-shop/
+├── index.html          Inicio
+├── tienda.html          Catálogo (/tienda)
+├── producto.html        Detalle de producto (?id=...)
+├── personalizados.html  Formulario de pedidos personalizados
+├── eventos.html         Próximos y eventos pasados
+├── pedido.html           "Mi pedido" + solicitud
+├── confirmacion.html    Pantalla de confirmación + WhatsApp
+├── css/styles.css        Sistema de diseño (colores, tipografía, componentes)
+├── js/config.js          Datos configurables (WhatsApp, Instagram, Google Form)
+├── js/products.js        Catálogo de productos (editar aquí)
+├── js/events.js          Eventos (editar aquí)
+├── js/cart.js            Lógica de "Mi pedido" (localStorage)
+├── js/orders.js          Generación de mensaje de WhatsApp y respaldo en Google Form
+├── js/ui.js              Header, footer, menú móvil, utilidades visuales
+├── robots.txt / sitemap.xml   SEO básico
+```

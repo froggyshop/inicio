@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personalizados — Froggy Shop</title>
+<meta name="description" content="¿Tienes una idea diferente? Froggy Shop crea productos personalizados para cumpleaños, conciertos, fan projects y eventos K-Pop.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2226%22>🐸</text></svg>">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<main>
+  <section class="section" style="padding-bottom: var(--space-4);">
+    <div class="container app-width">
+      <div class="hero__sticker-wrap" style="justify-content:center;">
+        <span class="sticker">¿tienes una idea diferente? 💭</span>
+      </div>
+      <div class="section-head">
+        <h2>Pedidos personalizados</h2>
+        <p>Preparamos productos especiales para cumpleaños, conciertos, fan projects, cupsleeve events, reuniones de fandom, intercambios de freebies y otros eventos K-Pop.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container app-width">
+      <form id="custom-form" class="card" novalidate>
+        <div class="form-field">
+          <label for="c-name">Nombre completo</label>
+          <input type="text" id="c-name" required autocomplete="name">
+          <span class="error" id="err-c-name" hidden>Escribe tu nombre.</span>
+        </div>
+
+        <div class="form-field">
+          <label for="c-whatsapp">WhatsApp</label>
+          <input type="tel" id="c-whatsapp" inputmode="numeric" placeholder="Ej. 7711234567" required autocomplete="tel">
+          <span class="error" id="err-c-whatsapp" hidden>Escribe un número de WhatsApp válido.</span>
+        </div>
+
+        <div class="form-field">
+          <label for="c-email">Correo electrónico (opcional)</label>
+          <input type="email" id="c-email" autocomplete="email">
+        </div>
+
+        <div class="form-field">
+          <label for="c-event-date">Fecha del evento</label>
+          <input type="date" id="c-event-date">
+        </div>
+
+        <div class="form-field">
+          <label for="c-qty">Cantidad aproximada</label>
+          <input type="number" id="c-qty" min="1" placeholder="Ej. 30">
+        </div>
+
+        <div class="form-field">
+          <label for="c-group">Grupo/artista (si aplica)</label>
+          <input type="text" id="c-group">
+        </div>
+
+        <div class="form-field">
+          <label for="c-type">Tipo de producto</label>
+          <input type="text" id="c-type" placeholder="Ej. llavero, banner, kit de decoración…">
+        </div>
+
+        <div class="form-field">
+          <label for="c-description">Cuéntanos tu idea</label>
+          <textarea id="c-description" required placeholder="Describe cómo te imaginas tu producto…"></textarea>
+          <span class="error" id="err-c-description" hidden>Cuéntanos brevemente tu idea.</span>
+        </div>
+
+        <div class="form-field">
+          <label for="c-budget">Presupuesto aproximado (opcional)</label>
+          <input type="text" id="c-budget" placeholder="Ej. $500 MXN">
+        </div>
+
+        <div class="form-field">
+          <label>Entrega</label>
+          <div class="radio-row" id="c-delivery-options">
+            <label class="radio-card" data-value="personal">
+              <input type="radio" name="c-delivery" value="personal" checked>
+              Entrega personal en Pachuca
+            </label>
+            <label class="radio-card" data-value="envio">
+              <input type="radio" name="c-delivery" value="envio">
+              Envío
+            </label>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="c-images">Imágenes o referencias (opcional)</label>
+          <input type="file" id="c-images" accept="image/*" multiple>
+          <p class="hint">Como esta página no guarda archivos, al enviar se abrirá WhatsApp: solo adjunta ahí las imágenes que quieras compartir.</p>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--block" style="margin-top: var(--space-3);">Enviar solicitud por WhatsApp</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/events.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/orders.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    UI.renderHeader("personalizados");
+    UI.renderFooter();
+
+    document.querySelectorAll('input[name="c-delivery"]').forEach((r) =>
+      r.addEventListener("change", updateDeliveryUI)
+    );
+    updateDeliveryUI();
+
+    document.getElementById("custom-form").addEventListener("submit", handleSubmit);
+  });
+
+  function updateDeliveryUI() {
+    const selected = document.querySelector('input[name="c-delivery"]:checked').value;
+    document.querySelectorAll("#c-delivery-options .radio-card").forEach((card) => {
+      card.classList.toggle("is-selected", card.dataset.value === selected);
+    });
+  }
+
+  function toggleFieldError(inputId, errorId, show) {
+    document.getElementById(inputId).classList.toggle("has-error", show);
+    document.getElementById(errorId).hidden = !show;
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById("c-name").value.trim();
+    const whatsapp = document.getElementById("c-whatsapp").value.trim();
+    const description = document.getElementById("c-description").value.trim();
+
+    let valid = true;
+    toggleFieldError("c-name", "err-c-name", name.length === 0);
+    if (name.length === 0) valid = false;
+
+    const waValid = whatsapp.replace(/\D/g, "").length >= 10;
+    toggleFieldError("c-whatsapp", "err-c-whatsapp", !waValid);
+    if (!waValid) valid = false;
+
+    toggleFieldError("c-description", "err-c-description", description.length === 0);
+    if (description.length === 0) valid = false;
+
+    if (!valid) return;
+
+    const email = document.getElementById("c-email").value.trim();
+    const eventDate = document.getElementById("c-event-date").value;
+    const qty = document.getElementById("c-qty").value;
+    const group = document.getElementById("c-group").value.trim();
+    const type = document.getElementById("c-type").value.trim();
+    const budget = document.getElementById("c-budget").value.trim();
+    const delivery = document.querySelector('input[name="c-delivery"]:checked').value;
+
+    const lines = [];
+    lines.push("Hola Froggy Shop, quiero platicarles sobre una idea personalizada.");
+    lines.push("");
+    lines.push(`Nombre: ${name}`);
+    if (email) lines.push(`Correo: ${email}`);
+    if (eventDate) lines.push(`Fecha del evento: ${eventDate}`);
+    if (qty) lines.push(`Cantidad aproximada: ${qty}`);
+    if (group) lines.push(`Grupo/artista: ${group}`);
+    if (type) lines.push(`Tipo de producto: ${type}`);
+    lines.push(`Idea: ${description}`);
+    if (budget) lines.push(`Presupuesto aproximado: ${budget}`);
+    lines.push(`Entrega: ${delivery === "personal" ? `Entrega personal en ${FROGGY_CONFIG.localDeliveryCity}` : "Envío"}`);
+    lines.push("");
+    lines.push("Voy a adjuntar mis imágenes de referencia aquí en el chat.");
+
+    const message = lines.join("\n");
+    window.open(OrdersAPI.whatsappUrl(message), "_blank");
+  }
+</script>
+</body>
+</html>

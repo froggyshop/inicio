@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  IMPORTANTE: reemplaza "https://TU-DOMINIO-AQUI" por la URL real
+  del sitio una vez publicado (por ejemplo, tu usuario.github.io/froggy-shop)
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://TU-DOMINIO-AQUI/index.html</loc></url>
+  <url><loc>https://TU-DOMINIO-AQUI/tienda.html</loc></url>
+  <url><loc>https://TU-DOMINIO-AQUI/personalizados.html</loc></url>
+  <url><loc>https://TU-DOMINIO-AQUI/eventos.html</loc></url>
+</urlset>
