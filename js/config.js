@@ -10,9 +10,8 @@ const FROGGY_CONFIG = {
   // Nombre de la tienda
   storeName: "Froggy Shop",
 
-  // PLACEHOLDER: número de WhatsApp en formato internacional SIN signos
-  // Ejemplo real: "5217711234567" (52 = México, 1 = celular, luego el número a 10 dígitos)
-  whatsappNumber: "PLACEHOLDER_WHATSAPP_NUMBER",
+  // Número real de WhatsApp de Froggy Shop: 55 1481 6066
+  whatsappNumber: "5215514816066",
 
   // Instagram (dato real proporcionado)
   instagramHandle: "@froggy.shop_1",

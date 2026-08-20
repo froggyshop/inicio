@@ -2,23 +2,43 @@
 
 Sitio estático mobile-first para Froggy Shop: catálogo, "Mi pedido", solicitud de personalizados y flujo de confirmación por WhatsApp. No usa base de datos ni servidor — todo el contenido editable vive en archivos `.js` dentro de `/js`.
 
-## Antes de publicar: cosas que DEBES editar
+## Estado actual
+
+- ✅ WhatsApp real configurado (55 1481 6066).
+- ✅ Logo de Froggy Shop e ícono de Instagram cargados (`assets/logo-froggyshop.jpeg`, `assets/logo-instagram.png`), usados en el header, el pie de página y el favicon.
+- ✅ Catálogo con los 19 productos reales y sus precios/pedidos mínimos.
+- ⏳ **Falta agregar las fotos de cada producto** (ver abajo).
+
+## Cómo agregar las fotos de los productos
+
+Cada producto en `js/products.js` ya tiene un comentario arriba indicando el nombre exacto que debe llevar su foto, por ejemplo:
+
+```js
+// foto: assets/productos/llavero-normal.jpg
+{
+  id: "llavero-normal",
+  ...
+  images: [],   // <- cambiar a: images: ["assets/productos/llavero-normal.jpg"]
+```
+
+Pasos:
+1. Sube tus fotos a la carpeta `assets/productos/` en GitHub (botón "Add file" → "Upload files"), usando exactamente el nombre indicado en cada comentario `// foto:`.
+2. Abre `js/products.js` en GitHub, edítalo, y cambia `images: []` por `images: ["assets/productos/NOMBRE-DEL-ARCHIVO.jpg"]` en cada producto que ya tenga foto.
+3. Si tu foto es `.png` o `.jpeg` en vez de `.jpg`, ajusta la extensión en ese mismo lugar.
+
+Mientras no agregues la foto, el producto se muestra igual en la tienda con un marcador de "foto pendiente" — no rompe nada.
+
+## Otras cosas que puedes editar
 
 1. **`js/config.js`**
-   - `whatsappNumber`: tu número real, formato `52` + 10 dígitos, sin espacios ni signos. Ejemplo: `"5217711234567"`.
    - `contactEmail`: tu correo real (opcional).
    - Si quieres el respaldo en Google Forms (ver abajo), cambia `googleFormEnabled` a `true` y llena `googleFormActionUrl` y `googleFormEntries`.
 
-2. **`js/products.js`**
-   - Reemplaza los productos marcados con `isDemo: true` por tus productos reales (o bórralos y agrega los tuyos con el mismo formato).
-   - Los precios, fotos y descripciones de ejemplo NO son reales — bórralos antes de compartir el sitio con clientes.
-   - Para fotos, guarda tus imágenes dentro de `assets/productos/` y escribe la ruta en el campo `images`, ej. `images: ["assets/productos/llavero-1.jpg"]`. Si dejas `images: []`, se muestra un marcador de "foto pendiente".
-
-3. **`js/events.js`**
+2. **`js/events.js`**
    - Está vacío a propósito. Agrega tus eventos reales cuando los tengas.
 
-4. **`sitemap.xml`**
-   - Cambia `https://TU-DOMINIO-AQUI` por la URL real una vez publicado el sitio.
+3. **`sitemap.xml`**
+   - Cambia `https://TU-DOMINIO-AQUI` por la URL real una vez publicado el sitio (ej. `https://froggyshop.github.io/inicio/`).
 
 ## Cómo se maneja cada cosa sin base de datos
 

@@ -28,7 +28,7 @@ const UI = {
     header.innerHTML = `
       <div class="site-header__bar">
         <a href="index.html" class="brand" aria-label="Ir al inicio de Froggy Shop">
-          <span class="brand__mark" aria-hidden="true">🐸</span>
+          <span class="brand__mark" aria-hidden="true"><img src="assets/logo-froggyshop.jpeg" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></span>
           Froggy Shop
         </a>
         <nav class="nav-desktop" aria-label="Navegación principal">
@@ -89,7 +89,8 @@ const UI = {
     footer.innerHTML = `
       <div class="container">
         <a class="social-pill" href="${FROGGY_CONFIG.instagramUrl}" target="_blank" rel="noopener">
-          📸 ${FROGGY_CONFIG.instagramHandle}
+          <img src="assets/logo-instagram.png" alt="" style="width:18px;height:18px;filter:invert(1);">
+          ${FROGGY_CONFIG.instagramHandle}
         </a>
         <nav class="footer-links" aria-label="Enlaces del pie de página">
           <a href="index.html">Inicio</a>
@@ -104,15 +105,4 @@ const UI = {
     `;
   },
 
-  renderDevBanner() {
-    if (!PRODUCTS.some((p) => p.isDemo)) return;
-    const el = document.createElement("div");
-    el.className = "dev-banner";
-    el.textContent = "🛠️ Sitio en configuración: los productos y precios que ves son de ejemplo. Edita js/products.js con los datos reales de Froggy Shop.";
-    document.body.insertBefore(el, document.body.firstChild);
-  },
 };
-
-document.addEventListener("DOMContentLoaded", () => {
-  UI.renderDevBanner();
-});
