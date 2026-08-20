@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puntos de entrega — Froggy Shop</title>
+<meta name="description" content="Lugares disponibles para entrega personal de tu pedido de Froggy Shop en Pachuca y Mineral de la Reforma.">
+<link rel="icon" href="assets/logo-froggyshop.jpeg">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<main class="container app-width" style="padding-top: var(--space-5); padding-bottom: var(--space-7);">
+  <div class="section-head" style="text-align:left; margin: 0 0 var(--space-3);">
+    <span class="eyebrow">Entrega personal</span>
+    <h2>Puntos de entrega</h2>
+    <p>Coordinamos la entrega por WhatsApp una vez que tu pedido esté listo. Elige el punto más cercano a ti al hacer tu pedido.</p>
+  </div>
+
+  <div class="policy-callout">
+    <strong>Costo de entrega</strong>
+    Soriana del Valle, Plaza Bella, Tulipanes, Plaza Juárez y Reloj Monumental de Pachuca tienen un costo extra de $20 MXN. La entrega en Los Tuzos o Forjadores no tiene costo adicional.
+  </div>
+
+  <div id="points-list" style="margin-top: var(--space-5);"></div>
+
+  <div style="text-align:center; margin-top: var(--space-5);">
+    <a href="pedido.html" class="btn btn--primary">Ir a Mi pedido</a>
+  </div>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/events.js"></script>
+<script src="js/delivery.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    UI.renderHeader("puntos-entrega");
+    UI.renderFooter();
+
+    document.getElementById("points-list").innerHTML = DELIVERY_POINTS.map(
+      (p) => `
+      <div class="delivery-point-card">
+        <div class="map-embed">
+          <iframe src="${DeliveryAPI.mapEmbedUrl(p.mapQuery)}" loading="lazy" title="Mapa de ${p.label}" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="delivery-point-card__body">
+          <span class="delivery-point-card__name">${p.label}</span>
+          ${p.extraCost > 0
+            ? `<span class="cost-badge cost-badge--extra">+ ${UI.formatMoney(p.extraCost)} de entrega</span>`
+            : `<span class="cost-badge cost-badge--free">Sin costo adicional</span>`}
+          <a href="${DeliveryAPI.mapLinkUrl(p.mapQuery)}" target="_blank" rel="noopener" style="font-size:13px; font-weight:800; color:var(--pink-strong); margin-top:4px;">Abrir en Google Maps →</a>
+        </div>
+      </div>`
+    ).join("");
+  });
+</script>
+</body>
+</html>

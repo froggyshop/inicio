@@ -36,6 +36,7 @@ const UI = {
           <a href="tienda.html">Tienda</a>
           <a href="personalizados.html">Personalizados</a>
           <a href="eventos.html">Eventos</a>
+          <a href="puntos-entrega.html">Puntos de entrega</a>
         </nav>
         <div class="header-actions">
           <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
@@ -52,6 +53,7 @@ const UI = {
         <a href="tienda.html">Tienda</a>
         <a href="personalizados.html">Personalizados</a>
         <a href="eventos.html">Eventos</a>
+        <a href="puntos-entrega.html">Puntos de entrega</a>
         <a href="pedido.html">Mi pedido</a>
       </nav>
     `;
@@ -97,9 +99,14 @@ const UI = {
           <a href="tienda.html">Tienda</a>
           <a href="personalizados.html">Personalizados</a>
           <a href="eventos.html">Eventos</a>
+          <a href="puntos-entrega.html">Puntos de entrega</a>
           <a href="pedido.html">Mi pedido</a>
         </nav>
-        <p class="footer-note">Entrega personal en ${FROGGY_CONFIG.localDeliveryCity} o envío a todo México. Pedidos sobre pedido — precios sujetos a confirmación.</p>
+        <nav class="footer-links" aria-label="Enlaces legales" style="font-size:12px; font-weight:700; opacity:.75;">
+          <a href="aviso-privacidad.html">Aviso de privacidad</a>
+          <a href="terminos.html">Términos y condiciones</a>
+        </nav>
+        <p class="footer-note">Entrega personal en ${FROGGY_CONFIG.localDeliveryCity} o envío a todo México (Correos de México $60, paquetería privada desde $180). Pedidos sobre pedido, con 50% de anticipo — ver <a href="terminos.html">términos y condiciones</a>.</p>
         <p class="footer-note">© ${new Date().getFullYear()} Froggy Shop.</p>
       </div>
     `;

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aviso de privacidad — Froggy Shop</title>
+<meta name="description" content="Aviso de privacidad de Froggy Shop: qué datos personales recabamos y cómo los usamos.">
+<link rel="icon" href="assets/logo-froggyshop.jpeg">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<main class="container app-width legal-content" style="padding-top: var(--space-5); padding-bottom: var(--space-7);">
+  <span class="eyebrow">Legal</span>
+  <h2>Aviso de privacidad</h2>
+  <p class="legal-updated" id="legal-updated"></p>
+
+  <h2>1. Responsable de tus datos</h2>
+  <p>
+    <span id="resp-name"></span>, con actividad comercial bajo el nombre "Froggy Shop", con domicilio en
+    <span id="resp-location"></span>, es responsable del uso y protección de tus datos personales, de conformidad con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP).
+  </p>
+
+  <h2>2. Datos personales que recabamos</h2>
+  <p>Para procesar tus pedidos y solicitudes recabamos los siguientes datos, únicamente cuando tú los proporcionas a través del sitio o de WhatsApp:</p>
+  <ul>
+    <li>Nombre completo</li>
+    <li>Número de WhatsApp</li>
+    <li>Correo electrónico (opcional)</li>
+    <li>Dirección de entrega, cuando eliges envío (estado, ciudad, calle, código postal)</li>
+    <li>Detalles del pedido: productos, cantidades, comentarios y, en pedidos personalizados, imágenes de referencia que tú decidas enviarnos por WhatsApp</li>
+  </ul>
+  <p>No recabamos datos financieros ni de tarjetas: los pagos se coordinan y confirman directamente por WhatsApp, fuera de este sitio.</p>
+
+  <h2>3. Finalidades del tratamiento</h2>
+  <p>Tus datos se usan únicamente para:</p>
+  <ul>
+    <li>Procesar, confirmar y dar seguimiento a tu pedido o solicitud de cotización.</li>
+    <li>Contactarte por WhatsApp o correo electrónico sobre el estado de tu pedido.</li>
+    <li>Coordinar la entrega personal o el envío de tu pedido.</li>
+    <li>Responder dudas relacionadas con tu compra.</li>
+  </ul>
+  <p>No usamos tus datos con fines de mercadotecnia o publicidad sin tu consentimiento adicional, ni los vendemos ni compartimos con terceros ajenos al cumplimiento de tu pedido.</p>
+
+  <h2>4. Cómo se almacenan tus datos</h2>
+  <p>Este sitio no cuenta con una base de datos propia en un servidor. Los datos que llenas en el formulario de pedido:</p>
+  <ul>
+    <li>Se guardan temporalmente en tu propio navegador mientras armas tu pedido ("Mi pedido").</li>
+    <li>Se envían directamente a Froggy Shop a través de WhatsApp cuando confirmas tu solicitud.</li>
+    <li id="gform-note" style="display:none;">Se guardan además como respaldo en una hoja de cálculo interna de Froggy Shop, con fines exclusivos de seguimiento de pedidos.</li>
+  </ul>
+
+  <h2>5. Transferencia de datos</h2>
+  <p>Froggy Shop no transfiere tus datos personales a terceros, salvo cuando es estrictamente necesario para cumplir tu pedido, por ejemplo al proporcionar tu dirección a un servicio de paquetería (Correos de México o paquetería privada) para realizar el envío que tú solicitaste.</p>
+
+  <h2>6. Derechos ARCO</h2>
+  <p>Tienes derecho a Acceder, Rectificar, Cancelar u Oponerte (derechos ARCO) al uso de tus datos personales, así como a revocar tu consentimiento en cualquier momento. Para ejercer estos derechos, contáctanos por WhatsApp al número de Froggy Shop o por Instagram <span id="ig-handle"></span>, indicando claramente tu solicitud.</p>
+
+  <h2>7. Cambios a este aviso</h2>
+  <p>Este aviso de privacidad puede actualizarse. Los cambios se publicarán en esta misma página con la fecha de última actualización.</p>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/events.js"></script>
+<script src="js/delivery.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    UI.renderHeader("aviso-privacidad");
+    UI.renderFooter();
+    document.getElementById("legal-updated").textContent = `Última actualización: ${FROGGY_CONFIG.legal.lastUpdated}`;
+    document.getElementById("resp-name").textContent = FROGGY_CONFIG.legal.responsableName;
+    document.getElementById("resp-location").textContent = FROGGY_CONFIG.legal.responsableLocation;
+    document.getElementById("ig-handle").textContent = FROGGY_CONFIG.instagramHandle;
+    if (FROGGY_CONFIG.googleFormEnabled) {
+      document.getElementById("gform-note").style.display = "list-item";
+    }
+  });
+</script>
+</body>
+</html>

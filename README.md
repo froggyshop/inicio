@@ -7,7 +7,36 @@ Sitio estático mobile-first para Froggy Shop: catálogo, "Mi pedido", solicitud
 - ✅ WhatsApp real configurado (55 1481 6066).
 - ✅ Logo de Froggy Shop e ícono de Instagram cargados (`assets/logo-froggyshop.jpeg`, `assets/logo-instagram.png`), usados en el header, el pie de página y el favicon.
 - ✅ Catálogo con los 19 productos reales y sus precios/pedidos mínimos.
+- ✅ Política de anticipo (50%), tiempos de diseño/producción, entrega, envío, cancelaciones y devoluciones — ver `terminos.html`, ya integrada en el cálculo de "Mi pedido".
+- ✅ Aviso de privacidad (`aviso-privacidad.html`) a nombre de José Luis López Escamilla, Pachuca de Soto, Hidalgo.
+- ✅ Página de puntos de entrega con mapa de Google Maps para cada punto (`puntos-entrega.html`).
 - ⏳ **Falta agregar las fotos de cada producto** (ver abajo).
+
+## Puntos de entrega y costos (ya configurados en `js/delivery.js`)
+
+- Soriana del Valle, Plaza Bella, Tulipanes, Plaza Juárez, Reloj Monumental de Pachuca: **+$20 MXN**.
+- Colonia Los Tuzos (Bulevar Los Tuzos) y Colonia Forjadores (Avenida de los Árboles): **sin costo**.
+- Envío por Correos de México: **$60 MXN** fijo.
+- Envío por paquetería privada: **desde $180 MXN**, variable según el pedido.
+
+> Nota sobre los mapas: como Los Tuzos y Forjadores son colonias (no direcciones exactas), el mapa de esos dos puntos usa la avenida principal de cada colonia como referencia (Bulevar Los Tuzos y Avenida de los Árboles). Si quieres un punto de encuentro más específico (por ejemplo una tienda o plaza puntual dentro de la colonia), avísame y ajusto `mapQuery` en `js/delivery.js` para que el pin caiga exactamente ahí.
+
+Todo esto se calcula automáticamente en `pedido.html`: el cliente elige el punto o método, el total y el anticipo (50%) se recalculan solos, y el punto/método elegido se agrega al mensaje de WhatsApp.
+
+## Cómo editar las políticas (anticipo, tiempos, cancelación)
+
+Todo vive en `js/config.js`, dentro de `policy`:
+```js
+policy: {
+  depositPercent: 0.5,             // 50% de anticipo
+  designDaysHabiles: 2,
+  productionDaysMin: 5,
+  productionDaysMax: 10,
+  cancellationWindowDaysHabiles: 3,
+  cancellationRefundPercent: 0.5,
+}
+```
+El texto visible en `terminos.html` está escrito a mano (no se genera automáticamente desde estos números), así que si cambias algún valor aquí, actualiza también el texto correspondiente en `terminos.html`.
 
 ## Cómo agregar las fotos de los productos
 

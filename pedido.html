@@ -24,11 +24,12 @@
 
     <div id="cart-summary" style="display:none;">
       <div class="summary-row">
-        <span>Total estimado</span>
-        <span id="cart-total"></span>
+        <span>Subtotal de productos</span>
+        <span id="cart-subtotal"></span>
       </div>
       <p class="summary-note" id="cart-min-warning" style="display:none;"></p>
       <p class="summary-note" id="cart-disclaimer"></p>
+      <p class="summary-note">Los pedidos requieren el 50% de anticipo para comenzar. Consulta el detalle en <a href="terminos.html">términos y condiciones</a>.</p>
     </div>
 
     <div style="display:flex; flex-direction:column; gap: var(--space-3); margin-top: var(--space-5);">
@@ -68,7 +69,7 @@
         <div class="radio-row" id="delivery-options">
           <label class="radio-card" data-value="personal">
             <input type="radio" name="delivery" value="personal" checked>
-            Entrega personal en Pachuca
+            Entrega personal
           </label>
           <label class="radio-card" data-value="envio">
             <input type="radio" name="delivery" value="envio">
@@ -77,7 +78,19 @@
         </div>
       </div>
 
+      <!-- Puntos de entrega personal -->
+      <div id="personal-fields" class="form-field">
+        <label>Punto de entrega</label>
+        <div class="delivery-sub-options" id="delivery-points-options"></div>
+        <p class="hint">La hora exacta se coordina por WhatsApp una vez que tu pedido esté listo. Consulta la ubicación de cada punto en <a href="puntos-entrega.html" target="_blank">Puntos de entrega</a>.</p>
+      </div>
+
+      <!-- Método de envío + dirección -->
       <div id="address-fields" style="display:none;">
+        <div class="form-field">
+          <label>Método de envío</label>
+          <div class="delivery-sub-options" id="shipping-methods-options"></div>
+        </div>
         <div class="form-field">
           <label for="f-state">Estado</label>
           <input type="text" id="f-state" name="state">
@@ -106,6 +119,31 @@
         <textarea id="f-comments" name="comments" placeholder="Ej. quiero recogerlo antes del 15, o esta es una referencia de diseño…"></textarea>
       </div>
 
+      <!-- Resumen de costos con entrega y anticipo -->
+      <div class="card" style="background: var(--mint); border:none; margin-top: var(--space-4);">
+        <div class="summary-row">
+          <span>Subtotal de productos</span>
+          <span id="checkout-products-total"></span>
+        </div>
+        <div class="summary-row">
+          <span id="checkout-delivery-label">Costo de entrega</span>
+          <span id="checkout-delivery-cost"></span>
+        </div>
+        <div class="summary-row summary-row--total">
+          <span>Total estimado</span>
+          <span id="checkout-total"></span>
+        </div>
+        <div class="summary-row" style="color: var(--pink-strong); font-weight:800;">
+          <span>Anticipo requerido (50%)</span>
+          <span id="checkout-deposit"></span>
+        </div>
+      </div>
+
+      <div class="policy-callout" style="margin-top: var(--space-4);">
+        <strong>Cómo sigue tu pedido</strong>
+        Con el 50% de anticipo comenzamos: el diseño se envía en 2 días hábiles y, tras tu aprobación, la producción toma de 5 a 10 días hábiles. Detalles completos en <a href="terminos.html">términos y condiciones</a>.
+      </div>
+
       <div style="display:flex; flex-direction:column; gap: var(--space-3); margin-top: var(--space-5);">
         <button type="submit" class="btn btn--primary" id="submit-order">Enviar solicitud</button>
         <button type="button" class="btn btn--ghost" id="back-to-cart">Volver a mi pedido</button>
@@ -120,6 +158,7 @@
 <script src="js/config.js"></script>
 <script src="js/products.js"></script>
 <script src="js/events.js"></script>
+<script src="js/delivery.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/orders.js"></script>
@@ -129,11 +168,13 @@
     UI.renderFooter();
     document.getElementById("cart-disclaimer").textContent = FROGGY_CONFIG.priceDisclaimer;
     renderCart();
+    renderDeliveryOptions();
 
     document.getElementById("go-checkout").addEventListener("click", () => {
       if (CartAPI.getItems().length === 0) return;
       document.getElementById("view-cart").style.display = "none";
       document.getElementById("view-checkout").style.display = "block";
+      updateCheckoutSummary();
       window.scrollTo(0, 0);
     });
 
@@ -145,19 +186,85 @@
     });
 
     document.querySelectorAll('input[name="delivery"]').forEach((radio) => {
-      radio.addEventListener("change", updateDeliveryUI);
+      radio.addEventListener("change", () => {
+        updateDeliveryTypeUI();
+        updateCheckoutSummary();
+      });
     });
-    updateDeliveryUI();
+    updateDeliveryTypeUI();
 
     document.getElementById("order-form").addEventListener("submit", handleSubmit);
   });
 
-  function updateDeliveryUI() {
+  function renderDeliveryOptions() {
+    const pointsWrap = document.getElementById("delivery-points-options");
+    pointsWrap.innerHTML = DELIVERY_POINTS.map(
+      (p, idx) => `
+      <label class="delivery-sub-card ${idx === 0 ? "is-selected" : ""}" data-group="point" data-id="${p.id}">
+        <span class="delivery-sub-card__label">
+          <input type="radio" name="deliveryPoint" value="${p.id}" ${idx === 0 ? "checked" : ""}>
+          ${p.label}
+        </span>
+        <span class="delivery-sub-card__cost">${p.extraCost > 0 ? "+" + UI.formatMoney(p.extraCost) : "Sin costo"}</span>
+      </label>`
+    ).join("");
+
+    const shippingWrap = document.getElementById("shipping-methods-options");
+    shippingWrap.innerHTML = SHIPPING_METHODS.map(
+      (s, idx) => `
+      <label class="delivery-sub-card ${idx === 0 ? "is-selected" : ""}" data-group="shipping" data-id="${s.id}">
+        <span class="delivery-sub-card__label">
+          <input type="radio" name="shippingMethod" value="${s.id}" ${idx === 0 ? "checked" : ""}>
+          ${s.label}
+        </span>
+        <span class="delivery-sub-card__cost">${UI.formatMoney(s.cost)}</span>
+      </label>`
+    ).join("");
+
+    document.querySelectorAll('input[name="deliveryPoint"], input[name="shippingMethod"]').forEach((input) => {
+      input.addEventListener("change", () => {
+        document.querySelectorAll(`.delivery-sub-card[data-group="${input.name === "deliveryPoint" ? "point" : "shipping"}"]`).forEach((card) => {
+          card.classList.toggle("is-selected", card.dataset.id === input.value);
+        });
+        updateCheckoutSummary();
+      });
+    });
+  }
+
+  function updateDeliveryTypeUI() {
     const selected = document.querySelector('input[name="delivery"]:checked').value;
     document.querySelectorAll("#delivery-options .radio-card").forEach((card) => {
       card.classList.toggle("is-selected", card.dataset.value === selected);
     });
+    document.getElementById("personal-fields").style.display = selected === "personal" ? "block" : "none";
     document.getElementById("address-fields").style.display = selected === "envio" ? "block" : "none";
+    document.getElementById("checkout-delivery-label").textContent =
+      selected === "personal" ? "Costo de entrega personal" : "Costo de envío";
+  }
+
+  function currentDeliveryCost() {
+    const deliveryType = document.querySelector('input[name="delivery"]:checked').value;
+    if (deliveryType === "personal") {
+      const pointId = document.querySelector('input[name="deliveryPoint"]:checked')?.value;
+      const point = DeliveryAPI.pointById(pointId);
+      return point ? point.extraCost : 0;
+    } else {
+      const shippingId = document.querySelector('input[name="shippingMethod"]:checked')?.value;
+      const shipping = DeliveryAPI.shippingById(shippingId);
+      return shipping ? shipping.cost : 0;
+    }
+  }
+
+  function updateCheckoutSummary() {
+    const productsTotal = CartAPI.total();
+    const deliveryCost = currentDeliveryCost();
+    const total = productsTotal + deliveryCost;
+    const deposit = total * FROGGY_CONFIG.policy.depositPercent;
+
+    document.getElementById("checkout-products-total").textContent = UI.formatMoney(productsTotal);
+    document.getElementById("checkout-delivery-cost").textContent = UI.formatMoney(deliveryCost);
+    document.getElementById("checkout-total").textContent = UI.formatMoney(total);
+    document.getElementById("checkout-deposit").textContent = UI.formatMoney(deposit);
   }
 
   function renderCart() {
@@ -206,7 +313,7 @@
       )
       .join("");
 
-    document.getElementById("cart-total").textContent = UI.formatMoney(CartAPI.total());
+    document.getElementById("cart-subtotal").textContent = UI.formatMoney(CartAPI.total());
 
     const below = CartAPI.belowMinimum();
     const warn = document.getElementById("cart-min-warning");
@@ -264,6 +371,16 @@
           }
         : null;
 
+    const deliveryPointId = document.querySelector('input[name="deliveryPoint"]:checked')?.value;
+    const shippingMethodId = document.querySelector('input[name="shippingMethod"]:checked')?.value;
+    const deliveryPoint = delivery === "personal" ? DeliveryAPI.pointById(deliveryPointId) : null;
+    const shippingMethod = delivery === "envio" ? DeliveryAPI.shippingById(shippingMethodId) : null;
+
+    const productsTotal = CartAPI.total();
+    const deliveryCost = currentDeliveryCost();
+    const total = productsTotal + deliveryCost;
+    const deposit = total * FROGGY_CONFIG.policy.depositPercent;
+
     const order = {
       id: OrdersAPI.generateOrderId(),
       date: new Date().toISOString(),
@@ -271,11 +388,16 @@
       whatsapp,
       email,
       delivery,
+      deliveryPoint,
+      shippingMethod,
       address,
       eventDate,
       comments,
       items: CartAPI.getItems(),
-      total: CartAPI.total(),
+      productsTotal,
+      deliveryCost,
+      total,
+      deposit,
     };
 
     const submitBtn = document.getElementById("submit-order");

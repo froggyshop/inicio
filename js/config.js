@@ -27,6 +27,27 @@ const FROGGY_CONFIG = {
   priceDisclaimer: "Precio estimado. Froggy Shop confirmará el precio final, disponibilidad y forma de pago antes del pago.",
 
   // ---------------------------------------------------------
+  // DATOS LEGALES (para Aviso de Privacidad y Términos)
+  // ---------------------------------------------------------
+  legal: {
+    responsableName: "José Luis López Escamilla",
+    responsableLocation: "Pachuca de Soto, Hidalgo, México",
+    lastUpdated: "20 de agosto de 2026",
+  },
+
+  // ---------------------------------------------------------
+  // POLÍTICAS DE PEDIDO, PRODUCCIÓN Y CANCELACIÓN
+  // ---------------------------------------------------------
+  policy: {
+    depositPercent: 0.5, // 50% de anticipo para iniciar el pedido
+    designDaysHabiles: 2, // días hábiles para el diseño después del depósito
+    productionDaysMin: 5, // días hábiles de producción tras aprobar el diseño
+    productionDaysMax: 10,
+    cancellationWindowDaysHabiles: 3, // días hábiles después del pago para cancelar
+    cancellationRefundPercent: 0.5, // % del anticipo que se devuelve si se cancela a tiempo
+  },
+
+  // ---------------------------------------------------------
   // RESPALDO EN GOOGLE FORM (opcional, además de WhatsApp)
   // ---------------------------------------------------------
   // Para activarlo:

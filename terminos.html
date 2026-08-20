@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Términos y condiciones — Froggy Shop</title>
+<meta name="description" content="Términos y condiciones de compra, entrega, cancelación y devoluciones de Froggy Shop.">
+<link rel="icon" href="assets/logo-froggyshop.jpeg">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<main class="container app-width legal-content" style="padding-top: var(--space-5); padding-bottom: var(--space-7);">
+  <span class="eyebrow">Legal</span>
+  <h2>Términos y condiciones</h2>
+  <p class="legal-updated" id="legal-updated"></p>
+
+  <h2>1. Sobre estos términos</h2>
+  <p>Estos términos aplican a todos los pedidos realizados a través de este sitio, por WhatsApp o por Instagram con <span id="ig-handle"></span>. Al enviar una solicitud de pedido, confirmas que los leíste y estás de acuerdo con ellos.</p>
+
+  <h2>2. Anticipo y proceso de producción</h2>
+  <ul>
+    <li>Todos los pedidos requieren un <strong>anticipo del 50% del total</strong> para comenzar a procesarse.</li>
+    <li>Una vez recibido el depósito, el <strong>diseño</strong> se entrega en un plazo de <strong>2 días hábiles</strong>.</li>
+    <li>Después de que apruebes el diseño, la <strong>producción</strong> del pedido toma de <strong>5 a 10 días hábiles</strong>.</li>
+    <li>El resto del pago se confirma antes de la entrega o envío, según se acuerde por WhatsApp.</li>
+  </ul>
+
+  <h2>3. Entrega personal</h2>
+  <p>La entrega personal se realiza en los puntos establecidos, a convenir por WhatsApp. Consulta el detalle y la ubicación de cada punto en <a href="puntos-entrega.html">Puntos de entrega</a>.</p>
+  <ul>
+    <li>Soriana del Valle, Plaza Bella, Tulipanes, Plaza Juárez y Reloj Monumental de Pachuca: costo extra de $20 MXN.</li>
+    <li>Colonia Los Tuzos o Colonia Forjadores: sin costo adicional.</li>
+  </ul>
+
+  <h2>4. Envíos</h2>
+  <ul>
+    <li><strong>Correos de México:</strong> costo fijo de $60 MXN.</li>
+    <li><strong>Paquetería privada:</strong> desde $180 MXN, dependiendo del volumen o tamaño del pedido. El costo final se confirma antes del pago.</li>
+  </ul>
+  <p>El cliente es responsable del rastreo y la logística de su pedido una vez que la tienda lo ha enviado.</p>
+
+  <h2>5. Devoluciones y cancelaciones</h2>
+  <ul>
+    <li><strong>No existen devoluciones de producto</strong>, ya que cada pedido es personalizado y se aprueba paso a paso junto con el cliente (incluyendo el diseño antes de producirse).</li>
+    <li>Una cancelación solo puede solicitarse <strong>antes de que comience la producción</strong>, es decir, dentro de los <strong>3 días hábiles</strong> posteriores al pago del anticipo.</li>
+    <li>Si la cancelación se hace dentro de ese plazo, se reembolsa únicamente el <strong>50% del anticipo</strong> pagado.</li>
+    <li>Pasado ese plazo, o si la producción ya inició, no se realizan reembolsos.</li>
+  </ul>
+
+  <h2>6. Responsabilidad sobre envíos y paquetería</h2>
+  <p>Froggy Shop no se hace responsable por:</p>
+  <ul>
+    <li>Tiempos de entrega incumplidos por parte de la paquetería.</li>
+    <li>Pedidos que quedan en ventanilla y el cliente nunca recoge.</li>
+    <li>Paquetes devueltos porque el cliente no pudo recibirlos en su domicilio ni pasar por ellos a la sucursal de paquetería. En estos casos, el cliente deberá cubrir nuevamente el costo de envío.</li>
+  </ul>
+
+  <h2>7. Reembolsos</h2>
+  <p>Los reembolsos únicamente son válidos cuando Froggy Shop no cumple con sus propios tiempos de entrega o producción establecidos en estos términos.</p>
+
+  <h2>8. Contacto</h2>
+  <p>Para dudas sobre tu pedido o estos términos, escríbenos por WhatsApp o Instagram <span id="ig-handle-2"></span>.</p>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/events.js"></script>
+<script src="js/delivery.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    UI.renderHeader("terminos");
+    UI.renderFooter();
+    document.getElementById("legal-updated").textContent = `Última actualización: ${FROGGY_CONFIG.legal.lastUpdated}`;
+    document.getElementById("ig-handle").textContent = FROGGY_CONFIG.instagramHandle;
+    document.getElementById("ig-handle-2").textContent = FROGGY_CONFIG.instagramHandle;
+  });
+</script>
+</body>
+</html>

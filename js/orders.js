@@ -18,6 +18,17 @@ const OrdersAPI = {
     return `FS-${stamp}-${rand}`;
   },
 
+  deliveryDescription(order) {
+    if (order.delivery === "personal") {
+      const point = order.deliveryPoint;
+      return point
+        ? `Entrega personal en ${point.label}${point.extraCost > 0 ? " (+" + UI.formatMoney(point.extraCost) + ")" : ""}`
+        : `Entrega personal en ${FROGGY_CONFIG.localDeliveryCity}`;
+    }
+    const shipping = order.shippingMethod;
+    return shipping ? `Envío por ${shipping.label} (${UI.formatMoney(shipping.cost)})` : "Envío";
+  },
+
   buildWhatsappMessage(order) {
     const lines = [];
     lines.push("Hola Froggy Shop, quiero realizar un pedido.");
@@ -32,8 +43,10 @@ const OrdersAPI = {
       lines.push(`- ${i.qty} x ${i.name}${optionTxt} — ${priceTxt}`);
     });
     lines.push("");
+    lines.push(`Subtotal de productos: ${UI.formatMoney(order.productsTotal)}`);
+    lines.push(`${this.deliveryDescription(order)}`);
     lines.push(`Total estimado: ${UI.formatMoney(order.total)}`);
-    lines.push(`Entrega: ${order.delivery === "personal" ? `Entrega personal en ${FROGGY_CONFIG.localDeliveryCity}` : "Envío a domicilio"}`);
+    lines.push(`Anticipo requerido (50%): ${UI.formatMoney(order.deposit)}`);
     if (order.delivery === "envio") {
       lines.push(`Dirección: ${order.address.street}, ${order.address.city}, ${order.address.state}, CP ${order.address.zip}`);
     }
@@ -59,7 +72,7 @@ const OrdersAPI = {
       body.append(entries.name, order.name);
       body.append(entries.whatsapp, order.whatsapp);
       body.append(entries.email, order.email || "");
-      body.append(entries.delivery, order.delivery);
+      body.append(entries.delivery, this.deliveryDescription(order));
       body.append(
         entries.address,
         order.delivery === "envio"
@@ -70,7 +83,7 @@ const OrdersAPI = {
         entries.products,
         order.items.map((i) => `${i.qty}x ${i.name}${i.option ? " (" + i.option + ")" : ""}`).join(" | ")
       );
-      body.append(entries.total, String(order.total));
+      body.append(entries.total, `${order.total} (anticipo 50%: ${order.deposit})`);
       body.append(entries.comments, order.comments || "");
 
       await fetch(FROGGY_CONFIG.googleFormActionUrl, {

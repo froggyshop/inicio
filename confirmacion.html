@@ -20,6 +20,7 @@
 <script src="js/config.js"></script>
 <script src="js/products.js"></script>
 <script src="js/events.js"></script>
+<script src="js/delivery.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/orders.js"></script>
@@ -50,7 +51,7 @@
         <span class="sticker sticker--mint" style="color:#3E2B36;">¡recibimos tu pedido! 🐸💌</span>
       </div>
       <h1 style="font-size:24px; text-align:center;">Solicitud #${order.id}</h1>
-      <p style="text-align:center; color: var(--ink-soft);">Froggy Shop revisará tu pedido y te contactará para confirmar disponibilidad, precio final, envío y forma de pago.</p>
+      <p style="text-align:center; color: var(--ink-soft);">Froggy Shop revisará tu pedido y te contactará para confirmar disponibilidad, precio final y forma de pago del anticipo.</p>
 
       <div class="card" style="margin: var(--space-5) 0;">
         <h3 style="font-size:16px;">Resumen</h3>
@@ -63,14 +64,27 @@
           </div>`
           )
           .join("")}
+        <div class="summary-row">
+          <span>Subtotal de productos</span>
+          <span>${UI.formatMoney(order.productsTotal)}</span>
+        </div>
+        <div class="summary-row">
+          <span>${order.delivery === "personal" ? "Costo de entrega" : "Costo de envío"}</span>
+          <span>${UI.formatMoney(order.deliveryCost)}</span>
+        </div>
         <div class="summary-row summary-row--total">
           <span>Total estimado</span>
           <span>${UI.formatMoney(order.total)}</span>
         </div>
-        <p class="summary-note">Entrega: ${order.delivery === "personal" ? `Entrega personal en ${FROGGY_CONFIG.localDeliveryCity}` : "Envío a domicilio"}</p>
+        <p class="summary-note">${OrdersAPI.deliveryDescription(order)}</p>
       </div>
 
-      <a href="${waUrl}" class="btn btn--whatsapp btn--block" target="_blank" rel="noopener">Continuar por WhatsApp</a>
+      <div class="policy-callout">
+        <strong>Anticipo requerido: ${UI.formatMoney(order.deposit)} (50%)</strong>
+        Con este anticipo comenzamos tu pedido: el diseño se envía en 2 días hábiles y, tras tu aprobación, la producción toma de 5 a 10 días hábiles. Ver <a href="terminos.html">términos y condiciones</a>.
+      </div>
+
+      <a href="${waUrl}" class="btn btn--whatsapp btn--block" target="_blank" rel="noopener" style="margin-top: var(--space-4);">Continuar por WhatsApp</a>
       <a href="tienda.html" class="btn btn--ghost btn--block" style="margin-top: var(--space-3);">Seguir explorando la tienda</a>
     `;
   });
