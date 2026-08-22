@@ -119,7 +119,7 @@ const UI = {
           <a href="aviso-privacidad.html">Aviso de privacidad</a>
           <a href="terminos.html">Términos y condiciones</a>
         </nav>
-        <p class="footer-note">Pedidos sobre pedido, con 50% de anticipo — ver <a href="terminos.html">términos y condiciones</a>.</p>
+        <p class="footer-note">Recuerda leer nuestros">términos y condiciones</a>.</p>
         <p class="footer-note">© ${new Date().getFullYear()} Froggy Shop.</p>
       </div>
     `;
