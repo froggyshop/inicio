@@ -65,7 +65,7 @@ const PRODUCTS = [
     category: "decoracion",
     group: "",
     member: "",
-    images: [],
+    images: ["assets/productos/planilla-stickers.jpeg"],
     price: 15,
     unit: "pieza",
     minOrder: 4,
