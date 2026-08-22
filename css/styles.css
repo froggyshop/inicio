@@ -564,3 +564,33 @@ input.has-error, select.has-error, textarea.has-error{ border-color: #C23B5A; }
   text-align: center;
   padding: var(--space-2) var(--space-4);
 }
+
+/* ---------- Badge 'Foto de referencia' ---------- */
+.product-card__badge--ref{
+  left: auto;
+  right: 8px;
+  background: var(--ink);
+  opacity: 0.85;
+}
+.hero__media{ position: relative; }
+
+/* ---------- Reproductor de música flotante ---------- */
+.music-toggle{
+  position: fixed;
+  bottom: 20px;
+  right: 16px;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-pill);
+  background: var(--pink-strong);
+  color: var(--white);
+  border: none;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  z-index: 60;
+}
+.music-toggle--raised{ bottom: 92px; }

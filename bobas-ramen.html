@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barra: Bobas y Ramen — Froggy Shop</title>
+<meta name="description" content="La barra de Bobas y Ramen de Froggy Shop: siempre en los eventos de Hallyu Zone Pachuca, y disponible para tu fiesta en Pachuca de Soto y Mineral de la Reforma.">
+<link rel="icon" href="assets/logo-froggyshop.jpeg">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<main>
+  <section class="section" style="padding-bottom: var(--space-4);">
+    <div class="container app-width">
+      <div class="hero__sticker-wrap" style="justify-content:center;">
+        <span class="sticker">bobas + ramen 🧋🍜</span>
+      </div>
+      <div class="section-head">
+        <h2>Barra: Bobas y Ramen</h2>
+        <p>Nuestra barra de bobas y ramen te acompaña siempre en los eventos de <strong>Hallyu Zone Pachuca</strong>, y también la puedes reservar para tu propia fiesta.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--mint" style="padding-top: var(--space-5); padding-bottom: var(--space-5);">
+    <div class="container app-width">
+      <div class="card" style="display:flex; gap: var(--space-3); align-items:flex-start;">
+        <span style="font-size:26px;">📍</span>
+        <div>
+          <h3 style="font-size:16px; margin-bottom:2px;">Siempre en Hallyu Zone Pachuca</h3>
+          <p style="margin:0; color:var(--ink-soft); font-size:14px;">Búscanos en cada edición del evento. Confirma fechas próximas en nuestra sección de <a href="eventos.html">Eventos</a> o en Instagram.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: var(--space-5);">
+    <div class="container app-width">
+      <div class="section-head" style="text-align:left; margin-bottom: var(--space-4);">
+        <span class="eyebrow">Para tu evento</span>
+        <h2>¿Quieres la barra en tu fiesta?</h2>
+        <p>Llena el formulario y te contactamos por WhatsApp para confirmar disponibilidad y cotización.</p>
+      </div>
+
+      <div class="policy-callout" style="margin-bottom: var(--space-4);">
+        <strong>Zona de servicio</strong>
+        Por ahora este servicio solo está disponible en Pachuca de Soto y Mineral de la Reforma.
+      </div>
+
+      <form id="bobas-form" class="card" novalidate>
+        <div class="form-field">
+          <label for="b-name">Nombre completo</label>
+          <input type="text" id="b-name" required autocomplete="name">
+          <span class="error" id="err-b-name" hidden>Escribe tu nombre.</span>
+        </div>
+
+        <div class="form-field">
+          <label for="b-date">Fecha deseada</label>
+          <input type="date" id="b-date" required>
+          <span class="error" id="err-b-date" hidden>Elige una fecha.</span>
+        </div>
+
+        <div class="form-field">
+          <label for="b-event-type">Tipo de evento</label>
+          <input type="text" id="b-event-type" placeholder="Ej. cumpleaños, reunión de fandom, graduación…">
+        </div>
+
+        <div class="form-field">
+          <label for="b-time">Horario</label>
+          <input type="time" id="b-time">
+        </div>
+
+        <div class="form-field">
+          <label for="b-guests">Número de personas</label>
+          <input type="number" id="b-guests" min="1" placeholder="Ej. 20">
+        </div>
+
+        <div class="form-field">
+          <label for="b-location">Ubicación del evento</label>
+          <input type="text" id="b-location" placeholder="Colonia o dirección en Pachuca de Soto o Mineral de la Reforma" required>
+          <span class="error" id="err-b-location" hidden>Cuéntanos dónde será tu evento.</span>
+          <p class="hint">Recuerda: solo damos servicio dentro de Pachuca de Soto y Mineral de la Reforma.</p>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--block" style="margin-top: var(--space-3);">Enviar solicitud por WhatsApp</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/events.js"></script>
+<script src="js/delivery.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/orders.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    UI.renderHeader("bobas-ramen");
+    UI.renderFooter();
+    document.getElementById("bobas-form").addEventListener("submit", handleSubmit);
+  });
+
+  function toggleFieldError(inputId, errorId, show) {
+    document.getElementById(inputId).classList.toggle("has-error", show);
+    document.getElementById(errorId).hidden = !show;
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById("b-name").value.trim();
+    const date = document.getElementById("b-date").value;
+    const location = document.getElementById("b-location").value.trim();
+
+    let valid = true;
+    toggleFieldError("b-name", "err-b-name", name.length === 0);
+    if (name.length === 0) valid = false;
+
+    toggleFieldError("b-date", "err-b-date", date.length === 0);
+    if (date.length === 0) valid = false;
+
+    toggleFieldError("b-location", "err-b-location", location.length === 0);
+    if (location.length === 0) valid = false;
+
+    if (!valid) return;
+
+    const eventType = document.getElementById("b-event-type").value.trim();
+    const time = document.getElementById("b-time").value;
+    const guests = document.getElementById("b-guests").value;
+
+    const lines = [];
+    lines.push("Hola Froggy Shop, quiero reservar la barra de Bobas y Ramen para mi evento.");
+    lines.push("");
+    lines.push(`Nombre: ${name}`);
+    lines.push(`Fecha deseada: ${date}`);
+    if (eventType) lines.push(`Tipo de evento: ${eventType}`);
+    if (time) lines.push(`Horario: ${time}`);
+    if (guests) lines.push(`Número de personas: ${guests}`);
+    lines.push(`Ubicación: ${location}`);
+    lines.push("");
+    lines.push("Quedo al pendiente de la disponibilidad y cotización.");
+
+    window.open(OrdersAPI.whatsappUrl(lines.join("\n")), "_blank");
+  }
+</script>
+</body>
+</html>

@@ -54,12 +54,6 @@
       </div>
 
       <div class="form-field">
-        <label for="f-whatsapp">WhatsApp</label>
-        <input type="tel" id="f-whatsapp" name="whatsapp" inputmode="numeric" placeholder="Ej. 7711234567" required autocomplete="tel">
-        <span class="error" id="err-whatsapp" hidden>Escribe un número de WhatsApp válido.</span>
-      </div>
-
-      <div class="form-field">
         <label for="f-email">Correo electrónico (opcional)</label>
         <input type="email" id="f-email" name="email" autocomplete="email">
       </div>
@@ -345,7 +339,6 @@
   async function handleSubmit(e) {
     e.preventDefault();
     const name = document.getElementById("f-name").value.trim();
-    const whatsapp = document.getElementById("f-whatsapp").value.trim();
     const email = document.getElementById("f-email").value.trim();
     const delivery = document.querySelector('input[name="delivery"]:checked').value;
     const eventDate = document.getElementById("f-event-date").value;
@@ -354,10 +347,6 @@
     let valid = true;
     toggleFieldError("f-name", "err-name", name.length === 0);
     if (name.length === 0) valid = false;
-
-    const waValid = whatsapp.replace(/\D/g, "").length >= 10;
-    toggleFieldError("f-whatsapp", "err-whatsapp", !waValid);
-    if (!waValid) valid = false;
 
     if (!valid) return;
 
@@ -385,7 +374,6 @@
       id: OrdersAPI.generateOrderId(),
       date: new Date().toISOString(),
       name,
-      whatsapp,
       email,
       delivery,
       deliveryPoint,

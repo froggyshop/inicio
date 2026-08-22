@@ -6,20 +6,34 @@ Sitio estático mobile-first para Froggy Shop: catálogo, "Mi pedido", solicitud
 
 - ✅ WhatsApp real configurado (55 1481 6066).
 - ✅ Logo de Froggy Shop e ícono de Instagram cargados (`assets/logo-froggyshop.jpeg`, `assets/logo-instagram.png`), usados en el header, el pie de página y el favicon.
-- ✅ Catálogo con los 19 productos reales y sus precios/pedidos mínimos.
-- ✅ Política de anticipo (50%), tiempos de diseño/producción, entrega, envío, cancelaciones y devoluciones — ver `terminos.html`, ya integrada en el cálculo de "Mi pedido".
+- ✅ Catálogo con 20 productos reales (incluye "Pin normal" $10 y "Pin holográfico" $12; INE, boleto conmemorativo, tarjeta tipo crédito y billete están en la categoría Freebies).
+- ✅ Cada producto con foto muestra automáticamente la etiqueta "Foto de referencia", y su descripción aclara que el pedido es completamente personalizado.
+- ✅ Política de anticipo (50%), tiempos de diseño/producción, entrega, envío, cancelaciones y devoluciones — ver `terminos.html`, ya integrada en el cálculo de "Mi pedido" y mencionada también en Personalizados.
 - ✅ Aviso de privacidad (`aviso-privacidad.html`) a nombre de José Luis López Escamilla, Pachuca de Soto, Hidalgo.
-- ✅ Página de puntos de entrega con mapa de Google Maps para cada punto (`puntos-entrega.html`).
-- ⏳ **Falta agregar las fotos de cada producto** (ver abajo).
+- ✅ Página de puntos de entrega con mapa de Google Maps para cada punto (`puntos-entrega.html`), incluyendo Aurrera Tulipanes.
+- ✅ Página "Barra: Bobas y Ramen" (`bobas-ramen.html`) con formulario de reservación para eventos privados (zona de servicio: Pachuca de Soto y Mineral de la Reforma).
+- ✅ Reproductor de música de fondo en bucle (botón flotante 🎵 en todas las páginas).
+- ✅ El campo de WhatsApp del cliente ya no se pide en "Mi pedido" ni en "Personalizados" (el cliente ya escribe desde su propio WhatsApp).
+- ⏳ **Falta agregar las fotos de cada producto** (ver abajo) y el archivo de música.
+
+## Música de fondo en bucle
+
+El botón flotante 🎵 (abajo a la derecha, en todas las páginas) reproduce/pausa una pista en bucle al volumen del 15%.
+
+Para activarlo:
+1. Sube tu archivo de audio a `assets/audio/FSM.mp3` (el nombre debe ser exactamente `FSM.mp3`).
+2. Listo — no hay que tocar código. El botón ya está buscando ese archivo.
+
+Mientras no subas el archivo, el botón sigue apareciendo pero no sonará nada al presionarlo (no rompe la página).
 
 ## Puntos de entrega y costos (ya configurados en `js/delivery.js`)
 
-- Soriana del Valle, Plaza Bella, Tulipanes, Plaza Juárez, Reloj Monumental de Pachuca: **+$20 MXN**.
+- Soriana del Valle, Plaza Bella, Aurrera Tulipanes, Plaza Juárez, Reloj Monumental de Pachuca: **+$20 MXN**.
 - Colonia Los Tuzos (Bulevar Los Tuzos) y Colonia Forjadores (Avenida de los Árboles): **sin costo**.
 - Envío por Correos de México: **$60 MXN** fijo.
 - Envío por paquetería privada: **desde $180 MXN**, variable según el pedido.
 
-> Nota sobre los mapas: como Los Tuzos y Forjadores son colonias (no direcciones exactas), el mapa de esos dos puntos usa la avenida principal de cada colonia como referencia (Bulevar Los Tuzos y Avenida de los Árboles). Si quieres un punto de encuentro más específico (por ejemplo una tienda o plaza puntual dentro de la colonia), avísame y ajusto `mapQuery` en `js/delivery.js` para que el pin caiga exactamente ahí.
+> Nota sobre los mapas: como Los Tuzos y Forjadores son colonias (no direcciones exactas), el mapa de esos dos puntos usa la avenida principal de cada colonia como referencia (Bulevar Los Tuzos y Avenida de los Árboles). Si quieres un punto de encuentro más específico, avísame y ajusto `mapQuery` en `js/delivery.js`.
 
 Todo esto se calcula automáticamente en `pedido.html`: el cliente elige el punto o método, el total y el anticipo (50%) se recalculan solos, y el punto/método elegido se agrega al mensaje de WhatsApp.
 
@@ -36,7 +50,7 @@ policy: {
   cancellationRefundPercent: 0.5,
 }
 ```
-El texto visible en `terminos.html` está escrito a mano (no se genera automáticamente desde estos números), así que si cambias algún valor aquí, actualiza también el texto correspondiente en `terminos.html`.
+El texto visible en `terminos.html` y `personalizados.html` está escrito a mano (no se genera automáticamente desde estos números), así que si cambias algún valor aquí, actualiza también el texto correspondiente en esas páginas.
 
 ## Cómo agregar las fotos de los productos
 

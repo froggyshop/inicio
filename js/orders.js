@@ -70,7 +70,7 @@ const OrdersAPI = {
       const body = new URLSearchParams();
       body.append(entries.orderId, order.id);
       body.append(entries.name, order.name);
-      body.append(entries.whatsapp, order.whatsapp);
+      body.append(entries.whatsapp, "");
       body.append(entries.email, order.email || "");
       body.append(entries.delivery, this.deliveryDescription(order));
       body.append(

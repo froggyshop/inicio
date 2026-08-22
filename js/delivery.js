@@ -25,9 +25,9 @@ const DELIVERY_POINTS = [
   },
   {
     id: "tulipanes",
-    label: "Tulipanes",
+    label: "Aurrera Tulipanes",
     extraCost: 20,
-    mapQuery: "Tulipanes, Mineral de la Reforma, Hidalgo",
+    mapQuery: "Bodega Aurrera Tulipanes, Mineral de la Reforma, Hidalgo",
   },
   {
     id: "plaza-juarez",

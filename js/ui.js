@@ -21,6 +21,16 @@ const UI = {
     return this.photoPlaceholder();
   },
 
+  /** Media de producto con badges (cotización / foto de referencia) ya incluidos. */
+  productMediaHtml(product) {
+    const hasPhoto = product.images && product.images.length > 0;
+    return `
+      ${product.requiresQuote ? `<span class="product-card__badge">Cotización</span>` : ""}
+      ${hasPhoto ? `<span class="product-card__badge product-card__badge--ref">Foto de referencia</span>` : ""}
+      ${this.mediaHtml(product.images, product.name)}
+    `;
+  },
+
   renderHeader(activePage) {
     const header = document.getElementById("site-header");
     if (!header) return;
@@ -35,6 +45,7 @@ const UI = {
           <a href="index.html">Inicio</a>
           <a href="tienda.html">Tienda</a>
           <a href="personalizados.html">Personalizados</a>
+          <a href="bobas-ramen.html">Bobas y Ramen</a>
           <a href="eventos.html">Eventos</a>
           <a href="puntos-entrega.html">Puntos de entrega</a>
         </nav>
@@ -52,6 +63,7 @@ const UI = {
         <a href="index.html">Inicio</a>
         <a href="tienda.html">Tienda</a>
         <a href="personalizados.html">Personalizados</a>
+        <a href="bobas-ramen.html">Bobas y Ramen</a>
         <a href="eventos.html">Eventos</a>
         <a href="puntos-entrega.html">Puntos de entrega</a>
         <a href="pedido.html">Mi pedido</a>
@@ -98,6 +110,7 @@ const UI = {
           <a href="index.html">Inicio</a>
           <a href="tienda.html">Tienda</a>
           <a href="personalizados.html">Personalizados</a>
+          <a href="bobas-ramen.html">Bobas y Ramen</a>
           <a href="eventos.html">Eventos</a>
           <a href="puntos-entrega.html">Puntos de entrega</a>
           <a href="pedido.html">Mi pedido</a>
@@ -106,10 +119,56 @@ const UI = {
           <a href="aviso-privacidad.html">Aviso de privacidad</a>
           <a href="terminos.html">Términos y condiciones</a>
         </nav>
-        <p class="footer-note">Entrega personal en ${FROGGY_CONFIG.localDeliveryCity} o envío a todo México (Correos de México $60, paquetería privada desde $180). Pedidos sobre pedido, con 50% de anticipo — ver <a href="terminos.html">términos y condiciones</a>.</p>
+        <p class="footer-note">Pedidos sobre pedido, con 50% de anticipo — ver <a href="terminos.html">términos y condiciones</a>.</p>
         <p class="footer-note">© ${new Date().getFullYear()} Froggy Shop.</p>
       </div>
     `;
   },
 
+  renderDevBanner() {
+    // (sin uso actualmente, se deja disponible por si se necesita en el futuro)
+  },
+
+  /** Botón flotante para reproducir/pausar la música de fondo en bucle (assets/audio/FSM.mp3). */
+  renderMusicPlayer() {
+    if (document.getElementById("fs-music-toggle")) return;
+
+    const audio = document.createElement("audio");
+    audio.id = "fs-bg-audio";
+    audio.src = "assets/audio/FSM.mp3";
+    audio.loop = true;
+    audio.volume = 0.15;
+    audio.preload = "none";
+    document.body.appendChild(audio);
+
+    const btn = document.createElement("button");
+    btn.id = "fs-music-toggle";
+    btn.className = "music-toggle";
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Reproducir música de fondo");
+    btn.innerHTML = "🎵";
+    if (document.querySelector(".sticky-cta")) {
+      btn.classList.add("music-toggle--raised");
+    }
+
+    btn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play().catch(() => {
+          console.warn("No se pudo reproducir la música de fondo.");
+        });
+        btn.innerHTML = "⏸️";
+        btn.setAttribute("aria-label", "Pausar música de fondo");
+      } else {
+        audio.pause();
+        btn.innerHTML = "🎵";
+        btn.setAttribute("aria-label", "Reproducir música de fondo");
+      }
+    });
+
+    document.body.appendChild(btn);
+  },
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  UI.renderMusicPlayer();
+});

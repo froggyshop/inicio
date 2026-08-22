@@ -171,8 +171,7 @@
     return `
       <a class="product-card" href="producto.html?id=${p.id}" role="listitem">
         <div class="product-card__media">
-          ${p.requiresQuote ? `<span class="product-card__badge">Cotización</span>` : ""}
-          ${UI.mediaHtml(p.images, p.name)}
+          ${UI.productMediaHtml(p)}
         </div>
         <div class="product-card__body">
           <span class="product-card__cat">${ProductsAPI.categoryLabel(p.category)}</span>

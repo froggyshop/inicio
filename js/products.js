@@ -17,6 +17,11 @@
  * 4. Puedes usar .jpg, .jpeg o .png — solo ajusta la extensión
  *    en el nombre si no usas .jpg.
  *
+ * IMPORTANTE: en cuanto un producto tiene foto (images no vacío),
+ * el sitio le agrega automáticamente una etiqueta "Foto de
+ * referencia" sobre la imagen, porque cada pedido se personaliza
+ * con el cliente. No necesitas hacer nada extra para eso.
+ *
  * CAMPOS DE CADA PRODUCTO:
  *  id              identificador único (texto, sin espacios)
  *  name            nombre del producto
@@ -49,12 +54,14 @@ const CATEGORIES = [
   { id: "personalizados", label: "Personalizados" },
 ];
 
+const REFERENCE_PHOTO_NOTE = " La imagen es de referencia; tu pedido es completamente personalizado.";
+
 const PRODUCTS = [
   // foto: assets/productos/planilla-stickers.jpg
   {
     id: "planilla-stickers",
     name: "Planilla de stickers 1/4 de carta",
-    description: "Planilla de stickers tamaño 1/4 de carta.",
+    description: "Planilla de stickers tamaño 1/4 de carta." + REFERENCE_PHOTO_NOTE,
     category: "decoracion",
     group: "",
     member: "",
@@ -72,7 +79,7 @@ const PRODUCTS = [
   {
     id: "mistery-bag",
     name: "Mistery Bag",
-    description: "Incluye 1 pin, 1 polaroid y 2 mail stickers sorpresa.",
+    description: "Incluye 1 pin, 1 polaroid y 2 mail stickers sorpresa." + REFERENCE_PHOTO_NOTE,
     category: "freebies",
     group: "",
     member: "",
@@ -90,7 +97,25 @@ const PRODUCTS = [
   {
     id: "pin-holografico",
     name: "Pin acabado holográfico",
-    description: "Pin con acabado holográfico.",
+    description: "Pin con acabado holográfico." + REFERENCE_PHOTO_NOTE,
+    category: "accesorios",
+    group: "",
+    member: "",
+    images: [],
+    price: 12,
+    unit: "pieza",
+    minOrder: 1,
+    customizable: true,
+    requiresQuote: false,
+    available: true,
+    options: [],
+    isDemo: false,
+  },
+  // foto: assets/productos/pin-normal.jpg
+  {
+    id: "pin-normal",
+    name: "Pin normal",
+    description: "Pin con acabado estándar." + REFERENCE_PHOTO_NOTE,
     category: "accesorios",
     group: "",
     member: "",
@@ -108,7 +133,7 @@ const PRODUCTS = [
   {
     id: "polaroid-diseno",
     name: "Polaroid con diseño",
-    description: "Polaroid impresa con diseño a elegir.",
+    description: "Polaroid impresa con diseño a elegir." + REFERENCE_PHOTO_NOTE,
     category: "polaroids",
     group: "",
     member: "",
@@ -126,7 +151,7 @@ const PRODUCTS = [
   {
     id: "banner-lightstick",
     name: "Banner para lightstick",
-    description: "Para acompletar tu outfit. Banner decorativo para colgar en el lightstick.",
+    description: "Para acompletar tu outfit. Banner decorativo para colgar en el lightstick." + REFERENCE_PHOTO_NOTE,
     category: "banners",
     group: "",
     member: "",
@@ -144,7 +169,7 @@ const PRODUCTS = [
   {
     id: "llavero-foami-encaje",
     name: "Llavero de foami (con encaje)",
-    description: "Llavero de foami con encaje.",
+    description: "Llavero de foami con encaje." + REFERENCE_PHOTO_NOTE,
     category: "llaveros",
     group: "",
     member: "",
@@ -162,7 +187,7 @@ const PRODUCTS = [
   {
     id: "llavero-foami-sin-encaje",
     name: "Llavero de foami (sin encaje)",
-    description: "Llavero de foami sin encaje.",
+    description: "Llavero de foami sin encaje." + REFERENCE_PHOTO_NOTE,
     category: "llaveros",
     group: "",
     member: "",
@@ -180,7 +205,7 @@ const PRODUCTS = [
   {
     id: "llavero-mini-picket",
     name: "Llavero mini picket",
-    description: "Llavero estilo mini picket sign.",
+    description: "Llavero estilo mini picket sign." + REFERENCE_PHOTO_NOTE,
     category: "llaveros",
     group: "",
     member: "",
@@ -198,7 +223,7 @@ const PRODUCTS = [
   {
     id: "pasadores-cabello",
     name: "Pasadores de cabello",
-    description: "Pasadores de cabello personalizados. Precio válido en pedidos de más de 30 piezas.",
+    description: "Pasadores de cabello personalizados. Precio válido en pedidos de más de 30 piezas." + REFERENCE_PHOTO_NOTE,
     category: "accesorios",
     group: "",
     member: "",
@@ -216,7 +241,7 @@ const PRODUCTS = [
   {
     id: "llavero-camarita",
     name: "Llavero camarita",
-    description: "Llavero con diseño de camarita.",
+    description: "Llavero con diseño de camarita." + REFERENCE_PHOTO_NOTE,
     category: "llaveros",
     group: "",
     member: "",
@@ -234,7 +259,7 @@ const PRODUCTS = [
   {
     id: "llavero-normal",
     name: "Llavero normal",
-    description: "Llavero acrílico estándar.",
+    description: "Llavero acrílico estándar." + REFERENCE_PHOTO_NOTE,
     category: "llaveros",
     group: "",
     member: "",
@@ -252,7 +277,7 @@ const PRODUCTS = [
   {
     id: "banner-diseno",
     name: "Banner (incluye diseño)",
-    description: "Banner impreso, el precio ya incluye el diseño.",
+    description: "Banner impreso, el precio ya incluye el diseño." + REFERENCE_PHOTO_NOTE,
     category: "banners",
     group: "",
     member: "",
@@ -270,7 +295,7 @@ const PRODUCTS = [
   {
     id: "photocard-kit",
     name: "Photocard Kit",
-    description: "Incluye banner, photocard y accesorio mini, todo embolsado individualmente.",
+    description: "Incluye banner, photocard y accesorio mini, todo embolsado individualmente." + REFERENCE_PHOTO_NOTE,
     category: "photocards",
     group: "",
     member: "",
@@ -288,7 +313,7 @@ const PRODUCTS = [
   {
     id: "photostrip",
     name: "Photostrip",
-    description: "Tira de fotos estilo photobooth.",
+    description: "Tira de fotos estilo photobooth." + REFERENCE_PHOTO_NOTE,
     category: "polaroids",
     group: "",
     member: "",
@@ -306,8 +331,8 @@ const PRODUCTS = [
   {
     id: "boleto-conmemorativo",
     name: "Boleto conmemorativo",
-    description: "Boleto conmemorativo personalizado.",
-    category: "accesorios",
+    description: "Boleto conmemorativo personalizado." + REFERENCE_PHOTO_NOTE,
+    category: "freebies",
     group: "",
     member: "",
     images: [],
@@ -324,8 +349,8 @@ const PRODUCTS = [
   {
     id: "ine-broma",
     name: "INE",
-    description: "Credencial de broma personalizada.",
-    category: "accesorios",
+    description: "Credencial de broma personalizada." + REFERENCE_PHOTO_NOTE,
+    category: "freebies",
     group: "",
     member: "",
     images: [],
@@ -342,8 +367,8 @@ const PRODUCTS = [
   {
     id: "tarjeta-credito",
     name: "Tarjeta tipo crédito (laminado)",
-    description: "Tarjeta personalizada tipo crédito con acabado laminado.",
-    category: "accesorios",
+    description: "Tarjeta personalizada tipo crédito con acabado laminado." + REFERENCE_PHOTO_NOTE,
+    category: "freebies",
     group: "",
     member: "",
     images: [],
@@ -360,8 +385,8 @@ const PRODUCTS = [
   {
     id: "billete",
     name: "Billete",
-    description: "Billete de broma personalizado.",
-    category: "accesorios",
+    description: "Billete de broma personalizado." + REFERENCE_PHOTO_NOTE,
+    category: "freebies",
     group: "",
     member: "",
     images: [],
@@ -378,7 +403,7 @@ const PRODUCTS = [
   {
     id: "mail-stickers",
     name: "Mail stickers",
-    description: "Stickers estilo mail, ideales para freebies e intercambios.",
+    description: "Stickers estilo mail, ideales para freebies e intercambios." + REFERENCE_PHOTO_NOTE,
     category: "freebies",
     group: "",
     member: "",

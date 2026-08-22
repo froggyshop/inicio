@@ -35,12 +35,6 @@
         </div>
 
         <div class="form-field">
-          <label for="c-whatsapp">WhatsApp</label>
-          <input type="tel" id="c-whatsapp" inputmode="numeric" placeholder="Ej. 7711234567" required autocomplete="tel">
-          <span class="error" id="err-c-whatsapp" hidden>Escribe un número de WhatsApp válido.</span>
-        </div>
-
-        <div class="form-field">
           <label for="c-email">Correo electrónico (opcional)</label>
           <input type="email" id="c-email" autocomplete="email">
         </div>
@@ -96,6 +90,11 @@
           <p class="hint">Como esta página no guarda archivos, al enviar se abrirá WhatsApp: solo adjunta ahí las imágenes que quieras compartir.</p>
         </div>
 
+        <div class="policy-callout" style="margin-top: var(--space-3);">
+          <strong>Cómo sigue tu pedido</strong>
+          Los pedidos requieren el 50% de anticipo para comenzar. Con el anticipo, el diseño se envía en 2 días hábiles y, tras tu aprobación, la producción toma de 5 a 10 días hábiles. Ver <a href="terminos.html">términos y condiciones</a>.
+        </div>
+
         <button type="submit" class="btn btn--primary btn--block" style="margin-top: var(--space-3);">Enviar solicitud por WhatsApp</button>
       </form>
     </div>
@@ -139,16 +138,11 @@
   function handleSubmit(e) {
     e.preventDefault();
     const name = document.getElementById("c-name").value.trim();
-    const whatsapp = document.getElementById("c-whatsapp").value.trim();
     const description = document.getElementById("c-description").value.trim();
 
     let valid = true;
     toggleFieldError("c-name", "err-c-name", name.length === 0);
     if (name.length === 0) valid = false;
-
-    const waValid = whatsapp.replace(/\D/g, "").length >= 10;
-    toggleFieldError("c-whatsapp", "err-c-whatsapp", !waValid);
-    if (!waValid) valid = false;
 
     toggleFieldError("c-description", "err-c-description", description.length === 0);
     if (description.length === 0) valid = false;
