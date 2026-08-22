@@ -134,7 +134,7 @@ const UI = {
 
     const audio = document.createElement("audio");
     audio.id = "fs-bg-audio";
-    audio.src = "assets/audio/FSM.mp3";
+    audio.src = "assets/audio/FSM.mpeg";
     audio.loop = true;
     audio.volume = 0.15;
     audio.preload = "none";
