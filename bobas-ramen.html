@@ -16,12 +16,22 @@
   <section class="section" style="padding-bottom: var(--space-4);">
     <div class="container app-width">
       <div class="hero__sticker-wrap" style="justify-content:center;">
-        <span class="sticker">bobas + ramen 🧋🍜</span>
+        <span class="sticker">🧋🍜 ¡antójate!</span>
       </div>
       <div class="section-head">
         <h2>Barra: Bobas y Ramen</h2>
-        <p>Nuestra barra de bobas y ramen te acompaña siempre en los eventos de <strong>Hallyu Zone Pachuca</strong> (checa las próximas fechas en <a href="eventos.html">Eventos</a>), y también la puedes reservar para tu propia fiesta.</p>
+        <p>Siempre la encontrarás en los eventos de <strong>Hallyu Zone Pachuca</strong> (checa las próximas fechas en <a href="eventos.html">Eventos</a>), y también puedes reservarla para tu propia fiesta.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="section section--mint" style="padding-top: var(--space-5); padding-bottom: var(--space-5);">
+    <div class="container app-width">
+      <div class="section-head" style="text-align:left; margin-bottom: var(--space-4);">
+        <span class="eyebrow">Así se ve</span>
+        <h2 style="font-size:20px;">Galería</h2>
+      </div>
+      <div id="gallery-wrap"></div>
     </div>
   </section>
 
@@ -84,15 +94,30 @@
 <script src="js/config.js"></script>
 <script src="js/products.js"></script>
 <script src="js/events.js"></script>
+<script src="js/gallery.js"></script>
 <script src="js/delivery.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/orders.js"></script>
 <script>
+  function renderGalleryItem(g) {
+    return `
+      <div class="gallery-item">
+        <img src="${g.src}" alt="${g.caption || 'Foto de la barra de Bobas y Ramen'}" loading="lazy"
+             onerror="this.closest('.gallery-item').innerHTML = UI.photoPlaceholder()">
+        ${g.caption ? `<span class="gallery-item__caption">${g.caption}</span>` : ""}
+      </div>`;
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     UI.renderHeader("bobas-ramen");
     UI.renderFooter();
     document.getElementById("bobas-form").addEventListener("submit", handleSubmit);
+
+    const images = GalleryAPI.images();
+    document.getElementById("gallery-wrap").innerHTML = images.length
+      ? `<div class="gallery-grid">${images.map(renderGalleryItem).join("")}</div>`
+      : `<div class="empty-state"><span class="empty-state__icon">📷</span><h3>Todavía no hay fotos en la galería</h3><p>Agrégalas en js/gallery.js.</p></div>`;
   });
 
   function toggleFieldError(inputId, errorId, show) {
