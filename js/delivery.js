@@ -43,15 +43,15 @@ const DELIVERY_POINTS = [
   },
   {
     id: "tuzos",
-    label: "Colonia Los Tuzos (Bulevar Los Tuzos)",
+    label: "Aurrera Tuzos",
     extraCost: 0,
-    mapQuery: "Bulevar Los Tuzos, Pachuca de Soto, Hidalgo",
+    mapQuery: "Bodega Aurrera Tuzos, Pachuca de Soto, Hidalgo",
   },
   {
     id: "forjadores",
-    label: "Colonia Forjadores (Avenida de los Árboles)",
+    label: "Oxxo Forjadores",
     extraCost: 0,
-    mapQuery: "Avenida de los Árboles, Forjadores de Pachuca, Mineral de la Reforma, Hidalgo",
+    mapQuery: "Oxxo Forjadores, Mineral de la Reforma, Hidalgo",
   },
 ];
 

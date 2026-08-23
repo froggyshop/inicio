@@ -1,10 +1,10 @@
 /**
- * GALERÍA DE FOTOS Y VIDEO DESTACADO
+ * GALERÍA DE FOTOS (Bobas y Ramen) Y VIDEO DESTACADO (Eventos)
  * -----------------------------------------------------------
- * Esto se muestra en la página de Eventos, debajo de "Próximos"
- * y "Anteriores". Sirve para fotos sueltas de eventos pasados
- * (no ligadas a un evento en particular) y para un video
- * destacado (por ejemplo, un resumen o teaser de un evento).
+ * GALLERY_IMAGES se muestra en la página "Barra: Bobas y Ramen"
+ * (bobas-ramen.html) — fotos de la barra en eventos.
+ *
+ * FEATURED_VIDEO se muestra en la página "Eventos" (eventos.html).
  *
  * ===========================================================
  * CÓMO AGREGAR FOTOS A LA GALERÍA
@@ -22,7 +22,7 @@ const GALLERY_IMAGES = [
   // Pega aquí tus fotos (usa el ejemplo de abajo como plantilla)
 
   // ===== EJEMPLO (copia desde aquí) =====
-  // { src: "assets/galeria/hallyu-zone-2026-01.jpeg", caption: "Hallyu Zone Pachuca 2026" },
+  // { src: "assets/galeria/bobas-ramen-01.jpeg", caption: "Barra de Bobas y Ramen en Hallyu Zone Pachuca" },
   // ===== FIN DEL EJEMPLO (hasta aquí) =====
 ];
 
