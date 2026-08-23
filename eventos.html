@@ -24,9 +24,19 @@
     <div id="events-upcoming" class="product-grid"></div>
   </div>
 
-  <div>
+  <div style="margin-bottom: var(--space-6);">
     <h3 style="font-size:18px;">Anteriores</h3>
     <div id="events-past" class="product-grid"></div>
+  </div>
+
+  <div style="margin-bottom: var(--space-6);">
+    <h3 style="font-size:18px;">Galería de fotos</h3>
+    <div id="gallery-wrap"></div>
+  </div>
+
+  <div>
+    <h3 style="font-size:18px;">Video destacado</h3>
+    <div id="video-wrap"></div>
   </div>
 </main>
 
@@ -35,6 +45,7 @@
 <script src="js/config.js"></script>
 <script src="js/products.js"></script>
 <script src="js/events.js"></script>
+<script src="js/gallery.js"></script>
 <script src="js/delivery.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/ui.js"></script>
@@ -52,6 +63,15 @@
       </div>`;
   }
 
+  function renderGalleryItem(g) {
+    return `
+      <div class="gallery-item">
+        <img src="${g.src}" alt="${g.caption || 'Foto de evento de Froggy Shop'}" loading="lazy"
+             onerror="this.closest('.gallery-item').innerHTML = UI.photoPlaceholder()">
+        ${g.caption ? `<span class="gallery-item__caption">${g.caption}</span>` : ""}
+      </div>`;
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     UI.renderHeader("eventos");
     UI.renderFooter();
@@ -66,6 +86,22 @@
     document.getElementById("events-past").outerHTML = past.length
       ? `<div id="events-past" class="product-grid">${past.map(renderEventCard).join("")}</div>`
       : `<div class="empty-state"><span class="empty-state__icon">📸</span><h3>Todavía no hay eventos anteriores registrados</h3><p>Los eventos pasados aparecerán aquí a medida que se agreguen en js/events.js.</p></div>`;
+
+    // Galería de fotos
+    const images = GalleryAPI.images();
+    document.getElementById("gallery-wrap").innerHTML = images.length
+      ? `<div class="gallery-grid">${images.map(renderGalleryItem).join("")}</div>`
+      : `<div class="empty-state"><span class="empty-state__icon">📷</span><h3>Todavía no hay fotos en la galería</h3><p>Agrégalas en js/gallery.js.</p></div>`;
+
+    // Video destacado
+    const video = GalleryAPI.video();
+    document.getElementById("video-wrap").innerHTML = video
+      ? `
+        <div class="video-frame">
+          <video src="${video.src}" controls preload="none"></video>
+        </div>
+        ${video.caption ? `<p style="font-size:13px; color:var(--ink-soft); margin-top:6px;">${video.caption}</p>` : ""}`
+      : `<div class="empty-state"><span class="empty-state__icon">🎬</span><h3>Aún no hay video destacado</h3><p>Actívalo en js/gallery.js cuando tengas uno listo.</p></div>`;
   });
 </script>
 </body>
